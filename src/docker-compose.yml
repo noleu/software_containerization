@@ -9,10 +9,6 @@ services:
         POSTGRES_USER: postgres
         POSTGRES_PASSWORD: postgres
         POSTGRES_DB: postgres
-    volumes:
-        - ./database/data:/var/lib/postgresql/data
-#    networks:
-#      - db_api
   api:
     build:
         context: ./api
@@ -29,16 +25,3 @@ services:
     command: /dlv --headless --listen=:40000 --api-version=2 exec /server
     environment:
       DATABASE_URL: postgres://postgres:postgres@database:5432/postgres
-#    networks:
-#      - db_api
-#      - api_host
-      # - api_frontend
-
-
-#networks:
-#  db_api:
-#    driver: bridge
-#  api_host:
-#    driver: host
-##  api_frontend:
-##    driver: bridge
