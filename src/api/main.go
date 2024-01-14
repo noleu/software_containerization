@@ -40,7 +40,7 @@ func database_int() {
 	log.Println("migrating database")
 	err = db.AutoMigrate(&Models.Event{}, &Models.User{}, &Models.Role{})
 
-	if err == nil {
+	if err != nil {
 		log.Fatal(err)
 	}
 	log.Println("database migration finished")
