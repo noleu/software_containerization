@@ -28,7 +28,7 @@ func main() {
 func database_int() {
 	log.Println("connecting to database")
 	log.Println("waiting for database to start")
-	time.Sleep(time.Duration(15) * time.Second)
+	time.Sleep(time.Duration(5) * time.Second)
 
 	dsn := "host=database user=postgres password=postgres dbname=Events port=5432 sslmode=disable TimeZone=Europe/Berlin"
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
