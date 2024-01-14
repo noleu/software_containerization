@@ -8,6 +8,7 @@ type Event struct {
 	DateTime     time.Time `gorm:"not null" json:"date_time"`
 	Location     string    `gorm:"size:255;not null" json:"location"`
 	Description  string    `gorm:"size:255;not null" json:"description"`
+	OrganizerId  uint      `gorm:"not null" json:"organizer_id"`
 	Organizer    User      `gorm:"foreignkey:OrganizerId"`
 	Participants []User    `gorm:"many2many:event_participants;"`
 }
