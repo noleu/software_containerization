@@ -11,10 +11,13 @@ services:
         POSTGRES_DB: postgres
     volumes:
       - ./database/init:/docker-entrypoint-initdb.d
+    networks:
+      - backend_db
   api:
     build:
         context: ./api
-        dockerfile: debug.Dockerfile
+#        dockerfile: debug.Dockerfile
+        dockerfile: Dockerfile
     ports:
       - "8080:8080"
       - "40000:40000"
@@ -27,3 +30,8 @@ services:
     command: /dlv --headless --listen=:40000 --api-version=2 exec /server
     environment:
       DATABASE_URL: postgres://postgres:postgres@database:5432/postgres
+    networks:
+      - backend_db
+
+networks:
+    backend_db:
