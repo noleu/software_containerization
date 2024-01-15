@@ -1,31 +1,50 @@
 package main
 
 import (
-	"fmt"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"log"
-	"net/http"
 	"software_containerization/Models"
 	"time"
+	"github.com/gin-gonic/gin"
 )
+
+func InitializeRoles(db *gorm.DB) {
+	roles := []string{"Organizer", "Participant", "Guest"}
+	for _, roleName := range roles {
+		var role Models.Role
+		result := db.First(&role, "name = ?", roleName)
+		if result.Error == gorm.ErrRecordNotFound {
+			// Role not found, create it
+			newRole := Models.Role{Name: roleName}
+			db.Create(&newRole)
+			log.Printf("Role '%s' created.\n", roleName)
+		}
+	}
+}
 
 func main() {
 	// set the flags for the logging package to give the filename in the logs
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
 
 	log.Println("starting sever")
-	database_int()
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusOK)
-		_, _ = fmt.Fprintln(w, "Hello World")
-	})
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	db := database_init()
 
+	// Initialize roles
+	InitializeRoles(db)
+
+	r := gin.Default()
+
+	r.GET("/roles", GetRolesHandler(db))
+
+	r.POST("/user", CreateUserHandler(db))
+
+	r.GET("/users", GetUserHandler(db))
+
+	r.Run(":8080")
 }
 
-// func database_int() gorm.DB { // not sure if needed
-func database_int() {
+func database_init() *gorm.DB {
 	log.Println("connecting to database")
 	log.Println("waiting for database to start")
 	time.Sleep(time.Duration(5) * time.Second)
@@ -45,5 +64,5 @@ func database_int() {
 	}
 	log.Println("database migration finished")
 	//return gorm.DB{}
-	//return *db // not sure pointer arithmetics
+	return db
 }
