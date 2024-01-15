@@ -17,7 +17,9 @@ This project is part of the VU Amsterdam Course Software Containerization.
 - (planned) basic for authentication
 - (planned) basic for authorization
 - setup with docker [guide](https://blog.jetbrains.com/go/2020/05/04/go-development-with-docker-containers/)
+  
 # Frontend
-
 - vue js
-- 
+- bun
+- nginx
+- docker
