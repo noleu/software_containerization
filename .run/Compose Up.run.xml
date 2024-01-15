@@ -1,0 +1,13 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Compose Up" type="docker-deploy" factoryName="docker-compose.yml" server-name="Docker Container Tutorial">
+    <deployment type="docker-compose.yml">
+      <settings>
+        <option name="envFilePath" value="" />
+        <option name="removeOrphansOnComposeDown" value="false" />
+        <option name="sourceFilePath" value="src/docker-compose.yml" />
+        <option name="upRemoveOrphans" value="true" />
+      </settings>
+    </deployment>
+    <method v="2" />
+  </configuration>
+</component>
