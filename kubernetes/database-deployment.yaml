@@ -18,6 +18,10 @@ spec:
         io.kompose.network/software-containerization-backend-db: "true"
         io.kompose.service: database
     spec:
+      volumes:
+        - name: db_data_storage
+          persistentVolumeClaim:
+            - claimName: database-data-persistentVolumeClaim
       containers:
         - env:
             - name: POSTGRES_DB
