@@ -5,6 +5,7 @@ import (
 	"gorm.io/gorm"
 	"log"
 	"software_containerization/Models"
+	"software_containerization/Handlers"
 	"time"
 	"github.com/gin-gonic/gin"
 )
@@ -30,16 +31,26 @@ func main() {
 	log.Println("starting sever")
 	db := database_init()
 
+	r := gin.Default()
+
 	// Initialize roles
 	InitializeRoles(db)
 
-	r := gin.Default()
+	r.GET("/roles", Handlers.GetRolesHandler(db))
+	r.GET("/roles/:id", Handlers.GetRoleByIdHandler(db))
 
-	r.GET("/roles", GetRolesHandler(db))
+	r.POST("/user", Handlers.CreateUserHandler(db))
+	r.GET("/users", Handlers.GetUsersHandler(db))
+	r.GET("/users/:id", Handlers.GetUserByIdHandler(db))
+	r.GET("/users/email/:email", Handlers.GetUserByEmailHandler(db))
+	r.PUT("/users/:id", Handlers.UpdateUserHandler(db))
 
-	r.POST("/user", CreateUserHandler(db))
-
-	r.GET("/users", GetUserHandler(db))
+	r.POST("/events", Handlers.CreateEventHandler(db))
+	r.GET("/events", Handlers.GetEventsHandler(db))
+	r.GET("/events/:id", Handlers.GetEventByIdHandler(db))
+	r.GET("/events/user/:userId", Handlers.GetEventsByUserIdHandler(db))
+	r.DELETE("/events/:id", Handlers.DeleteEventHandler(db))
+	r.PUT("/events/:id", Handlers.UpdateEventHandler(db))
 
 	r.Run(":8080")
 }
