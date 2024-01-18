@@ -2,15 +2,13 @@ version: '3'
 
 services:
   database:
-    build:
-      context: ./database
-      dockerfile: Dockerfile
+    image: postgres:16
     ports:
       - '5432:5432'
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: postgres
+      POSTGRES_DB: Events
     networks:
       - backend_db
 
