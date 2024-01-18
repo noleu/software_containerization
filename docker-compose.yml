@@ -2,15 +2,15 @@ version: '3'
 
 services:
   database:
-    image: postgres:16
+    build:
+      context: ./database
+      dockerfile: Dockerfile
     ports:
       - '5432:5432'
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: postgres
-    volumes:
-      - ./database/init:/docker-entrypoint-initdb.d
     networks:
       - backend_db
 
