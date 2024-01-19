@@ -30,7 +30,6 @@ jobs:
           username: ${{ secrets.GHCR_DOCKER_USERNAME }}
           password: ${{ secrets.GHCR_PAT }}
 
-      
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
@@ -40,7 +39,7 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v3
         with:
-          context: ./api
+          context: ./build/api
           file: ./Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
@@ -59,7 +58,6 @@ jobs:
           registry: ghcr.io/noleu/event_calendar_frontend
           username: ${{ secrets.GHCR_DOCKER_USERNAME }}
           password: ${{ secrets.GHCR_PAT }}
-
       
       - name: Extract metadata (tags, labels) for Docker
         id: meta
@@ -70,7 +68,7 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v3
         with:
-          context: ./frontend
+          context: ./build/frontend
           file: ./Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
