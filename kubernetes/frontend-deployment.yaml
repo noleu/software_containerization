@@ -37,5 +37,7 @@ spec:
               memory: 256Mi
             limits:
               cpu: 2
+              memory: 768Mi
+            
       restartPolicy: Always
 status: {}
