@@ -13,7 +13,7 @@ on:
   push:
     branches: 
       - main
-      - feat/kubernetes
+      - feat/k8
 
 jobs:
   build_and_push_backend:
