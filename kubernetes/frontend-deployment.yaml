@@ -25,7 +25,7 @@ spec:
               value: development
             - name: VITE_API_URL
               value: http://localhost:8080
-          image: frontend
+          image: ghcr.io/noleu/event_calendar_frontend
           name: event-frontend
           ports:
             - containerPort: 5173
