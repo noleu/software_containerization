@@ -20,9 +20,10 @@ WORKDIR /app
 COPY package.json /app
 COPY bun.lockb /app
 
-RUN bun install --silent --production
+RUN bun install --silent
 
 COPY . /app
+
 RUN bun run build
 
 # Stage 3: Production environment with Nginx
