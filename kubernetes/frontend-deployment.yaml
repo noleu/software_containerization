@@ -31,18 +31,11 @@ spec:
             - containerPort: 5173
               hostPort: 5173
               protocol: TCP
-          resources: {}
-          volumeMounts:
-            - mountPath: /app
-              name: frontend-claim0
-            - mountPath: /app/node_modules
-              name: frontend-claim1
+          resources: 
+            requests:
+              cpu: 1
+              memory: 256Mi
+            limits:
+              cpu: 2
       restartPolicy: Always
-      volumes:
-        - name: frontend-claim0
-          persistentVolumeClaim:
-            claimName: frontend-claim0
-        - name: frontend-claim1
-          persistentVolumeClaim:
-            claimName: frontend-claim1
 status: {}
