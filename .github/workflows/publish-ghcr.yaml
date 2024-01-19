@@ -24,7 +24,7 @@ jobs:
         uses: actions/checkout@v4
       
       - name: Log in to Docker Hub
-        uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
+        uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ secrets.GHCR_DOCKER_USERNAME }}
@@ -38,7 +38,7 @@ jobs:
           images: ghcr.io/noleu/event_calendar_api
       
       - name: Build and push Docker image
-        uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
+        uses: docker/build-push-action@v3
         with:
           context: ./api
           file: ./Dockerfile
@@ -54,7 +54,7 @@ jobs:
         uses: actions/checkout@v4
       
       - name: Log in to Docker Hub
-        uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
+        uses: docker/login-action@v3
         with:
           registry: ghcr.io/noleu/event_calendar_frontend
           username: ${{ secrets.GHCR_DOCKER_USERNAME }}
@@ -63,12 +63,12 @@ jobs:
       
       - name: Extract metadata (tags, labels) for Docker
         id: meta
-        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+        uses: docker/metadata-action@v3
         with:
           images: ghcr.io/noleu/event_calendar_frontend
       
       - name: Build and push Docker image
-        uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
+        uses: docker/build-push-action@v3
         with:
           context: ./frontend
           file: ./Dockerfile
