@@ -1,4 +1,4 @@
-package Models
+package DTOs
 
 type UpdateUserInput struct {
 	FirstName string `json:"first_name"`

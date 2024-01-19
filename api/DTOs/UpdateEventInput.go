@@ -1,4 +1,4 @@
-package Models
+package DTOs
 
 import "time"
 

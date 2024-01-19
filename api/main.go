@@ -40,15 +40,11 @@ func main() {
 	r.GET("/roles/:id", Handlers.GetRoleByIdHandler(db))
 
 	r.POST("/user", Handlers.CreateUserHandler(db))
-	r.GET("/users", Handlers.GetUsersHandler(db))
-	r.GET("/users/:id", Handlers.GetUserByIdHandler(db))
-	r.GET("/users/email/:email", Handlers.GetUserByEmailHandler(db))
+	r.GET("/users", Handlers.GetUsersHandler(db)) // get all users, get user by id, or by email query params
 	r.PUT("/users/:id", Handlers.UpdateUserHandler(db))
 
 	r.POST("/events", Handlers.CreateEventHandler(db))
-	r.GET("/events", Handlers.GetEventsHandler(db))
-	r.GET("/events/:id", Handlers.GetEventByIdHandler(db))
-	r.GET("/events/user/:userId", Handlers.GetEventsByUserIdHandler(db))
+	r.GET("/events", Handlers.GetEventsHandler(db)) // get all events, get event by id, or by userId query params
 	r.DELETE("/events/:id", Handlers.DeleteEventHandler(db))
 	r.PUT("/events/:id", Handlers.UpdateEventHandler(db))
 
