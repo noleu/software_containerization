@@ -29,7 +29,7 @@ spec:
           env:
             - name: DATABASE_URL
               value: postgres://postgres:postgres@database:5432/postgres
-          image: api
+          image: ghcr.io/noleu/event_calendar_api
           name: api
           ports:
             - containerPort: 8080
