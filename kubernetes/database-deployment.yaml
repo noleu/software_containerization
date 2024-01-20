@@ -27,9 +27,17 @@ spec:
             - name: POSTGRES_DB
               value: Events
             - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-secrets
+                  key: password
               value: postgres
             - name: POSTGRES_USER
-              value: postgres
+              valueFrom:
+                secretKeyRef:
+                  name: db-secrets
+                  key: userName
+
           image: postgres:16
           name: database
           ports:
