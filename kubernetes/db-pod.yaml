@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: db-pod
+  labels:
+    component: db
+spec:
+  volumes:
+    - name: db-storage
+      persistentVolumeClaim:
+        claimName: db-pvc
+  containers:
+  - name: db
+    image: postgres:16
+    ports:
+      - containerPort: 5432
+    volumeMounts:
+      - name: db-storage
+        mountPath: /var/lib/postgresql/data
+        subPath: postgres
+    env:
+      - name: POSTGRES_DB
+        value: Events
+      - name: POSTGRES_USER
+        valueFrom:
+          secretKeyRef:
+            name: db-secret
+            key: username
+      - name: POSTGRES_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: db-secret
+            key: password
