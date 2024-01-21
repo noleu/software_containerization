@@ -3,27 +3,34 @@ kind: Deployment
 metadata:
   creationTimestamp: null
   labels:
-    io.kompose.service: database
+    component: database
   name: database
 spec:
   replicas: 1
   selector:
     matchLabels:
-      io.kompose.service: database
+      component: database
   strategy: {}
   template:
     metadata:
       creationTimestamp: null
       labels:
         io.kompose.network/software-containerization-backend-db: "true"
-        io.kompose.service: database
+        component: database
     spec:
       volumes:
-        - name: db_data_storage
+        - name: db-data-storage
           persistentVolumeClaim:
-            - claimName: database-data-persistentVolumeClaim
+            claimName: db-pvc-claim0
       containers:
-        - env:
+        - name: database
+          image: postgres:16
+          ports:
+            - containerPort: 5432
+              hostPort: 5432
+              protocol: TCP
+
+          env:
             - name: POSTGRES_DB
               value: Events
             - name: POSTGRES_PASSWORD
@@ -31,25 +38,23 @@ spec:
                 secretKeyRef:
                   name: db-secrets
                   key: password
-              value: postgres
+            
             - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:
                   name: db-secrets
                   key: userName
 
-          image: postgres:16
-          name: database
-          ports:
-            - containerPort: 5432
-              hostPort: 5432
-              protocol: TCP
-          resources: 
-            requests:
-              cpu: 1
-              memory: 2gb
-            limits:
-              cpu: 2
-              memory: 4gb
+          volumeMounts:
+            - name: db-data-storage
+              mountPath: /var/lib/postgresql/data
+              subPath: postgres
+          # resources: 
+          #   requests:
+          #     cpu: 1
+          #     memory: 2Gi
+          #   limits:
+          #     cpu: 2
+          #     memory: 4Gi
       restartPolicy: Always
 status: {}
