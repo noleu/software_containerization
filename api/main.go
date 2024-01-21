@@ -5,6 +5,7 @@ import (
 	"gorm.io/gorm"
 	"log"
 	"software_containerization/Models"
+	"software_containerization/Handlers"
 	"time"
 	"github.com/gin-gonic/gin"
 )
@@ -30,16 +31,22 @@ func main() {
 	log.Println("starting sever")
 	db := database_init()
 
+	r := gin.Default()
+
 	// Initialize roles
 	InitializeRoles(db)
 
-	r := gin.Default()
+	r.GET("/roles", Handlers.GetRolesHandler(db))
+	r.GET("/roles/:id", Handlers.GetRoleByIdHandler(db))
 
-	r.GET("/roles", GetRolesHandler(db))
+	r.POST("/user", Handlers.CreateUserHandler(db))
+	r.GET("/users", Handlers.GetUsersHandler(db)) // get all users, get user by id, or by email query params
+	r.PUT("/users/:id", Handlers.UpdateUserHandler(db))
 
-	r.POST("/user", CreateUserHandler(db))
-
-	r.GET("/users", GetUserHandler(db))
+	r.POST("/events", Handlers.CreateEventHandler(db))
+	r.GET("/events", Handlers.GetEventsHandler(db)) // get all events, get event by id, or by userId query params
+	r.DELETE("/events/:id", Handlers.DeleteEventHandler(db))
+	r.PUT("/events/:id", Handlers.UpdateEventHandler(db))
 
 	r.Run(":8080")
 }
