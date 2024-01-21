@@ -7,9 +7,10 @@ metadata:
   name: frontend
 spec:
   ports:
-    - name: "5173"
+    - name: "frontend-svc-port"
+      protocol: TCP
       port: 5173
-      targetPort: 5173
+      targetPort: frontend-svc
   selector:
     io.kompose.service: frontend
 status:
