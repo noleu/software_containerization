@@ -3,7 +3,7 @@ kind: Service
 metadata:
   creationTimestamp: null
   labels:
-    io.kompose.service: database
+    component: db
   name: database
 spec:
   ports:
@@ -11,6 +11,6 @@ spec:
       port: 5432
       targetPort: 5432
   selector:
-    io.kompose.service: database
+    component: db
 status:
   loadBalancer: {}
