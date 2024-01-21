@@ -1,13 +1,15 @@
 package main
 
 import (
+	"fmt"
+	"github.com/gin-gonic/gin"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"log"
+	"os"
 	"software_containerization/Models"
 	"software_containerization/Handlers"
 	"time"
-	"github.com/gin-gonic/gin"
 )
 
 func InitializeRoles(db *gorm.DB) {
@@ -56,7 +58,28 @@ func database_init() *gorm.DB {
 	log.Println("waiting for database to start")
 	time.Sleep(time.Duration(5) * time.Second)
 
-	dsn := "host=database user=postgres password=postgres dbname=Events port=5432 sslmode=disable TimeZone=Europe/Berlin"
+	dbHostName := os.Getenv("DB_HOST_NAME")
+	if dbHostName == "" {
+		log.Fatal("Environment variable DB_HOST_NAME is not set")
+	}
+
+	dbUser := os.Getenv("DB_USER")
+	if dbUser == "" {
+		log.Fatal("Environment variable DB_USER is not set")
+	}
+
+	dbPassword := os.Getenv("DB_PASSWORD")
+	if dbPassword == "" {
+		log.Fatal("Environment variable DB_PASSWORD is not set")
+	}
+
+	dbName := os.Getenv("DB_NAME")
+	if dbName == "" {
+		log.Fatal("Environment variable DB_NAME is not set")
+	}
+
+	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=5432 sslmode=disable TimeZone=Europe/Berlin")
+	
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Fatal(err)
