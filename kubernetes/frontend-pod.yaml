@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: frontend-pod
+  labels:
+    component: frontend
+  
+spec:
+  containers:
+  - name: frontend
+    image: ghcr.io/noleu/event_calendar_frontend:latest
+    ports:
+      - containerPort: 80
