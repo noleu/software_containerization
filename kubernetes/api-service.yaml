@@ -10,9 +10,6 @@ spec:
     - name: "8080"
       port: 8080
       targetPort: 8080
-    - name: "40000"
-      port: 40000
-      targetPort: 40000
   selector:
     component: api
 status:
