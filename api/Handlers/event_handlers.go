@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 	"errors"
+	"log"
 )
 
 func CreateEventHandler(db *gorm.DB) gin.HandlerFunc {
@@ -91,6 +92,9 @@ func UpdateEventHandler(db *gorm.DB) gin.HandlerFunc {
 		var input DTOs.UpdateEventInput
 		eventId := c.Param("id")
 
+		log.Println("Hellloooooooooooooooooooooooo")
+		log.Println(c.Param("userID"))
+		
 		// Bind the JSON data to input
 		if err := c.ShouldBindJSON(&input); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})

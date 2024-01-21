@@ -31,6 +31,7 @@ services:
     command: /dlv --headless --listen=:40000 --api-version=2 exec /server
     environment:
       DATABASE_URL: postgres://postgres:postgres@database:5432/postgres
+      JWT_SECRET_KEY: postgress_secret_key
     networks:
       - backend_db
 
