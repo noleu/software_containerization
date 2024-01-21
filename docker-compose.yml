@@ -26,6 +26,9 @@ services:
       - SYS_PTRACE
     environment:
       DB_HOST: database
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_NAME: Events
     networks:
       - backend_db
 
