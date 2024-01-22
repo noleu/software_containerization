@@ -18,8 +18,8 @@ spec:
     spec:
       containers:
         - env:
-          - name: DB_HOST
-            value: database
+          - name: DB_HOST_NAME
+            value: database-cluster-ip-service
           - name: DB_NAME
             value: Events
           - name: DB_PASSWORD
