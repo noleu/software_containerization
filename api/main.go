@@ -71,8 +71,9 @@ func database_init() *gorm.DB {
 		log.Fatal("Environment variable DB_NAME is not set")
 	}
 
-	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=5432 sslmode=disable TimeZone=Europe/Berlin")
-	
+	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=5432 sslmode=disable TimeZone=Europe/Berlin",
+		dbHostName, dbUser, dbPassword, dbName)
+
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Fatal(err)
