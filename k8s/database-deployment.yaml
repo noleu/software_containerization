@@ -32,7 +32,10 @@ spec:
 
           env:
             - name: POSTGRES_DB
-              value: Events
+              valueFrom: 
+                configMapKeyRef:
+                  name: db-configmap
+                  key: db_name
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -43,7 +46,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: db-secrets
-                  key: userName
+                  key: username
 
           volumeMounts:
             - name: db-data-storage
@@ -58,3 +61,16 @@ spec:
           #     memory: 4Gi
       restartPolicy: Always
 status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: database-cluster-ip-service
+spec:
+  selector:
+    component: database
+  ports:
+    - port: 5432
+      targetPort: 5432
+  type: ClusterIP
+  

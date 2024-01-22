@@ -19,9 +19,15 @@ spec:
       containers:
         - env:
           - name: DB_HOST_NAME
-            value: database-cluster-ip-service
+            valueFrom:
+              configMapKeyRef:
+                name: db-configmap
+                key: db_host
           - name: DB_NAME
-            value: Events
+            valueFrom:
+              configMapKeyRef:
+                name: db-configmap
+                key: db_name
           - name: DB_PASSWORD
             valueFrom:
               secretKeyRef:
@@ -31,7 +37,7 @@ spec:
             valueFrom:
               secretKeyRef:
                 name: db-secrets
-                key: userName
+                key: username
 
           image: ghcr.io/noleu/event_calendar_api
           name: api
@@ -52,3 +58,16 @@ spec:
                 - SYS_PTRACE
       restartPolicy: Always
 status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: api-cluster-ip-service
+spec:
+  selector:
+    component: api
+  ports:
+    - port: 8080
+      targetPort: 8080
+  type: ClusterIP
+  
