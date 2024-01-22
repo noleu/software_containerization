@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: api-configmap
+  name: db-configmap
 data:
   db_host: database-cluster-ip-service
   db_name: Events
