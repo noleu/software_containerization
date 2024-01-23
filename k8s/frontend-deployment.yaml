@@ -53,5 +53,5 @@ spec:
     component: frontend
   type: ClusterIP
   ports:
-    - port: 80
+    - port: 8000
       targetPort: 80

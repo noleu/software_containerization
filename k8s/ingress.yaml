@@ -14,4 +14,4 @@ spec:
           service: 
             name: frontend-cluster-ip-service
             port: 
-              number: 80
+              number: 8000
