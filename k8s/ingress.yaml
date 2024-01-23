@@ -4,8 +4,12 @@ metadata:
   name: ingress-service
   namespace: default
 spec:
+  tls:
+    - hosts:
+      - myeventsapp.com
+      secretName: tls-secret
   rules:
-  - host: sc-myeventapp.com
+  - host: myeventsapp.com
     http:
       paths:
       - pathType: Prefix
@@ -14,4 +18,4 @@ spec:
           service: 
             name: frontend-cluster-ip-service
             port: 
-              number: 8000
+              number: 80
