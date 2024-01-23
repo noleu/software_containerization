@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-service
+  namespace: default
+spec:
+  rules:
+  - host: sc-myeventapp.com
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/?(.*)"
+        backend:
+          service: 
+            name: frontend-cluster-ip-service
+            port: 
+              number: 80
