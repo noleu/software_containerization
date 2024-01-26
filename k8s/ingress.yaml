@@ -3,6 +3,8 @@ kind: Ingress
 metadata:
   name: ingress-service
   namespace: default
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
 spec:
   ingressClassName: public
   rules:
@@ -16,3 +18,7 @@ spec:
             name: frontend-cluster-ip-service
             port: 
               number: 80
+  tls:
+  - hosts:
+    - myeventsapp.com
+    secretName: myingress-cert
