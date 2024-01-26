@@ -4,7 +4,7 @@ metadata:
   name: ingress-service
   namespace: default
 spec:
-  ingressClassName: webapprouting.kubernetes.azure.com
+  ingressClassName: public
   rules:
   - host: myeventsapp.com
     http:
