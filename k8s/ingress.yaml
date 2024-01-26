@@ -4,18 +4,15 @@ metadata:
   name: ingress-service
   namespace: default
 spec:
-  tls:
-    - hosts:
-      - myeventsapp.com
-      secretName: tls-secret
+  ingressClassName: webapprouting.kubernetes.azure.com
   rules:
   - host: myeventsapp.com
     http:
       paths:
-      - pathType: Prefix
-        path: "/?(.*)"
+      - path: /
+        pathType: Prefix
         backend:
-          service: 
+          service:
             name: frontend-cluster-ip-service
             port: 
               number: 80
