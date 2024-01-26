@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aks-helloworld  
+  namespace: hello-web-app-routing
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: aks-helloworld
+  template:
+    metadata:
+      labels:
+        app: aks-helloworld
+    spec:
+      containers:
+        - name: event-frontend
+          image: ghcr.io/noleu/event_calendar_frontend
+          env:
+          - name: NODE_ENV
+            value: production
+          - name: VITE_API_URL
+            value: "http://localhost:8080"
+          ports:
+            - containerPort: 80
+      # - name: aks-helloworld
+      #   image: mcr.microsoft.com/azuredocs/aks-helloworld:v1
+      #   ports:
+      #   - containerPort: 80
+      #   env:
+      #   - name: TITLE
+      #     value: "Welcome to Azure Kubernetes Service (AKS)"
+
