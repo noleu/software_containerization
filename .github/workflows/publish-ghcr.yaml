@@ -14,7 +14,7 @@ on:
     branches: 
       - main
       - feat/k8
-      - fix/docker-multiplatform-build
+      - net-policies
 
 jobs:
   build_and_push_backend:

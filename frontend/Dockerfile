@@ -29,6 +29,9 @@ RUN bun run build
 # Stage 3: Production environment with Nginx
 FROM nginx:alpine
 
+# Install wget
+RUN apk --no-cache add wget
+
 # Copy static assets from builder stage
 COPY --from=builder /app/dist /usr/share/nginx/html
 
