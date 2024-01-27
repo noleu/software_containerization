@@ -43,6 +43,7 @@ jobs:
           push: true
           tags: ghcr.io/noleu/event_calendar_api:latest
           labels: ${{ steps.meta.outputs.labels }}
+          platforms: linux/amd64,linux/arm64
           
   build_and_push_frontend:
     name: Push Docker image for frontend to Github Container Registry
@@ -72,4 +73,5 @@ jobs:
           push: true
           tags: ghcr.io/noleu/event_calendar_frontend:latest
           labels: ${{ steps.meta.outputs.labels }}
-
+          platforms: linux/amd64,linux/arm64
+          
