@@ -8,7 +8,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: postgres
+      POSTGRES_DB: Events
     volumes:
       - ./database/init:/docker-entrypoint-initdb.d
     networks:
