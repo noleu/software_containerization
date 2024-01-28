@@ -1,0 +1,13 @@
+{
+  "name": "BasicGKERole",
+  "title": "BasicGKERole",
+  "description": "This role is equipped with the minimal permission needed for RBAC",
+  "includedPermissions": [
+    "container.apiServices.get",
+    "container.apiServices.list",
+    "container.clusters.get",
+    "container.clusters.getCredentials"
+  ],
+  "stage": "GA",
+  "deleted": false
+}
