@@ -47,11 +47,11 @@ spec:
               protocol: TCP
           resources: 
             requests:
+              cpu: 500m
+              memory: 256Mi
+            limits:
               cpu: 1
               memory: 512Mi
-            limits:
-              cpu: 2
-              memory: 1024Mi
           securityContext:
             capabilities:
               add:
