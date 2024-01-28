@@ -5,6 +5,7 @@ metadata:
   labels:
     component: database
   name: database
+  namespace: event-app
 spec:
   replicas: 1
   selector:
@@ -66,6 +67,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: database-cluster-ip-service
+  namespace: event-app
 spec:
   selector:
     component: database
