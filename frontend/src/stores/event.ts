@@ -14,16 +14,21 @@ export const useEventStore = defineStore('event', () => {
       return data
     } catch (error) {
       console.log(error)
+      return error
     }
   }
 
   async function getEvents() {
     try {
       const { data } = await useAxios<ReturnEvent[]>('/events', { method: 'GET' }, instance)
-      events.value = data.value
-      return events.value
+      events.value = data.value?.map((event) => ({
+        ...event,
+        date_time: new Date(event.date_time)
+      }))
+      return data
     } catch (error) {
       console.log(error)
+      return error
     }
   }
 

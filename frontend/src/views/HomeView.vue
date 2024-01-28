@@ -3,7 +3,7 @@ import EventList from '@/components/EventList.vue'
 import EventSearch from '@/components/EventSearch.vue'
 import CreateEventModal from '@/components/CreateEventModal.vue'
 import { useEventStore } from '@/stores/event'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { Modal } from 'flowbite'
 import { type CreateEvent } from '@/interfaces/event'
 
@@ -12,14 +12,34 @@ const createEventModal = ref<Modal>()
 
 eventStore.getEvents()
 
+const searchString = ref('')
+
 onMounted(() => {
   const $createEventModalElement: HTMLElement | null = document.querySelector('#create-event-modal')
   createEventModal.value = new Modal($createEventModalElement)
 })
 
+const searchedEvents = computed(() => {
+  if (eventStore.events) {
+    return eventStore.events.filter((event) => {
+      return event.title.toLowerCase().includes(searchString.value.toLowerCase())
+    })
+  }
+  return []
+})
+
 function createEvent(eventData: CreateEvent) {
-  eventStore.createEvent(eventData)
-  createEventModal.value?.hide()
+  eventStore
+    .createEvent(eventData)
+    .then((res) => {
+      if (res) {
+        eventStore.getEvents()
+      }
+      createEventModal.value?.hide()
+    })
+    .catch((err) => {
+      console.error('Error creating event:', err)
+    })
 }
 </script>
 
@@ -28,7 +48,7 @@ function createEvent(eventData: CreateEvent) {
     <h1 class="text-3xl font-bold">Find some cool events</h1>
   </header>
   <div class="flex justify-center">
-    <EventSearch class="mr-2" />
+    <EventSearch v-model="searchString" class="mr-2" />
     <div class="flex items-center">
       <button
         @click="createEventModal?.show()"
@@ -38,7 +58,7 @@ function createEvent(eventData: CreateEvent) {
       </button>
     </div>
   </div>
-  <EventList v-if="eventStore.events" class="mt-2" :events="eventStore.events" />
+  <EventList v-if="searchedEvents" class="mt-2" :events="searchedEvents" />
 
   <CreateEventModal @close="createEventModal?.hide()" @create-event="createEvent" />
 </template>

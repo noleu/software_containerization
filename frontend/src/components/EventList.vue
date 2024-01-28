@@ -5,16 +5,48 @@ import { type ReturnEvent } from '@/interfaces/event'
 defineProps({
   events: { type: Array<ReturnEvent>, required: true }
 })
+
+function formattedEventDate(eventDate: Date) {
+  const months = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec'
+  ]
+
+  const monthIndex = eventDate.getMonth()
+  const day = eventDate.getDate()
+
+  const formattedDate = `${months[monthIndex]} ${day}`
+
+  return formattedDate
+}
 </script>
 
 <template>
-  <ul class="space-y-2" v-if="events.length > 0">
-    <li v-for="event in events" :key="event.id" class="border rounded-md p-2">
-      <span>{{ event.date_time }}</span>
-      <h1>{{ event.title }}</h1>
-      <p>{{ event.description }}</p>
-      <span>{{ event.location }}</span>
-    </li>
-  </ul>
-  <span v-else>No events found</span>
+  <div>
+    <ul v-if="events.length > 0">
+      <li v-for="event in events" :key="event.id" class="bg-white shadow-lg rounded-lg mb-4">
+        <div class="flex">
+          <div class="flex flex-col bg-blue-600 rounded-tl-lg rounded-bl-lg p-4">
+            <h1 class="text-white">{{ formattedEventDate(event.date_time) }}</h1>
+            <p class="text-sm text-white">{{ event.location }}</p>
+          </div>
+          <div class="p-4">
+            <h1 class="text-xl font-semibold">{{ event.title }}</h1>
+            <p class="text-sm overflow-auto break-words">{{ event.description }}</p>
+          </div>
+        </div>
+      </li>
+    </ul>
+    <p v-else class="text-gray-600">No events found</p>
+  </div>
 </template>
