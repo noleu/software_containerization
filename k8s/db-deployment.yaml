@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    component: database
+  name: database
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: database
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.network/software-containerization-backend-db: "true"
+        component: database
+    spec:
+      volumes:
+        - name: db-data-storage
+          persistentVolumeClaim:
+            claimName: db-pvc-claim0
+      containers:
+        - name: database
+          image: postgres:16
+          ports:
+            - containerPort: 5432
+              hostPort: 5432
+              protocol: TCP
+
+          env:
+            - name: POSTGRES_DB
+              valueFrom: 
+                configMapKeyRef:
+                  name: db-configmap
+                  key: db_name
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-secrets
+                  key: password
+            
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: db-secrets
+                  key: username
+
+          volumeMounts:
+            - name: db-data-storage
+              mountPath: /var/lib/postgresql/data
+              subPath: postgres
+          # resources: 
+          #   requests:
+          #     cpu: 1
+          #     memory: 2Gi
+          #   limits:
+          #     cpu: 2
+          #     memory: 4Gi
+      restartPolicy: Always
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: database-cluster-ip-service
+spec:
+  selector:
+    component: database
+  type: ClusterIP
+  ports:
+    - port: 5432
+      targetPort: 5432
+  
