@@ -5,8 +5,8 @@ api:
         add:
         - SYS_PTRACE
     image:
-      repository: https
-      tag: //ghcr.io/noleu/event_calendar_api
+      repository: ghcr.io/noleu/event_calendar_api
+      tag: latest
     resources:
       limits:
         cpu: "2"
@@ -32,7 +32,7 @@ databaseClusterIpService:
     targetPort: 5432
   type: ClusterIP
 dbConfigmap:
-  dbHost: database-cluster-ip-service
+  dbHost: myapp-database-cluster-ip-service
   dbName: Events
 dbSecrets:
   password: cG9zdGdyZXM=
@@ -40,15 +40,15 @@ dbSecrets:
 frontend:
   eventFrontend:
     image:
-      repository: https
-      tag: //ghcr.io/noleu/event_calendar_frontend
+      repository: ghcr.io/noleu/event_calendar_frontend
+      tag: latest
     resources:
       limits:
-        cpu: "2"
-        memory: 768Mi
+          cpu: 500m
+          memory: 384Mi
       requests:
-        cpu: "1"
-        memory: 256Mi
+          cpu: 500m
+          memory: 384Mi
   replicas: 1
 frontendClusterIpService:
   ports:

@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "myeventsappchart.fullname" . }}-frontend
+  name: {{ include "myapp.fullname" . }}-frontend
   labels:
-  {{- include "myeventsappchart.labels" . | nindent 4 }}
+  {{- include "myapp.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.frontend.replicas }}
   selector:
     matchLabels:
       app: frontend
-    {{- include "myeventsappchart.selectorLabels" . | nindent 6 }}
+    {{- include "myapp.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
         app: frontend
-      {{- include "myeventsappchart.selectorLabels" . | nindent 8 }}
+      {{- include "myapp.selectorLabels" . | nindent 8 }}
     spec:
       containers:
       - env:
@@ -22,12 +22,12 @@ spec:
           valueFrom:
             configMapKeyRef:
               key: node_env
-              name: {{ include "myeventsappchart.fullname" . }}-frontend-configmap
+              name: {{ include "myapp.fullname" . }}-frontend-configmap
         - name: VITE_API_URL
           valueFrom:
             configMapKeyRef:
               key: api_url
-              name: {{ include "myeventsappchart.fullname" . }}-frontend-configmap
+              name: {{ include "myapp.fullname" . }}-frontend-configmap
         - name: KUBERNETES_CLUSTER_DOMAIN
           value: {{ quote .Values.kubernetesClusterDomain }}
         image: {{ .Values.frontend.eventFrontend.image.repository }}:{{ .Values.frontend.eventFrontend.image.tag
@@ -41,13 +41,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "myeventsappchart.fullname" . }}-frontend-cluster-ip-service
+  name: {{ include "myapp.fullname" . }}-frontend-cluster-ip-service
   labels:
-  {{- include "myeventsappchart.labels" . | nindent 4 }}
+  {{- include "myapp.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.frontendClusterIpService.type }}
   selector:
     app: frontend
-  {{- include "myeventsappchart.selectorLabels" . | nindent 4 }}
+  {{- include "myapp.selectorLabels" . | nindent 4 }}
   ports:
 	{{- .Values.frontendClusterIpService.ports | toYaml | nindent 2 -}}

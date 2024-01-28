@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "myeventsappchart.fullname" . }}-db-configmap
+  name: {{ include "myapp.fullname" . }}-db-configmap
   labels:
-  {{- include "myeventsappchart.labels" . | nindent 4 }}
+  {{- include "myapp.labels" . | nindent 4 }}
 data:
   db_host: {{ .Values.dbConfigmap.dbHost | quote }}
   db_name: {{ .Values.dbConfigmap.dbName | quote }}

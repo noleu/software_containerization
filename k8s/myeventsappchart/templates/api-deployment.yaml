@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "myeventsappchart.fullname" . }}-api
+  name: {{ include "myapp.fullname" . }}-api
   labels:
     component: api
-  {{- include "myeventsappchart.labels" . | nindent 4 }}
+  {{- include "myapp.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.api.replicas }}
   selector:
     matchLabels:
       component: api
-    {{- include "myeventsappchart.selectorLabels" . | nindent 6 }}
+    {{- include "myapp.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
         component: api
         io.kompose.network/software-containerization-backend-db: "true"
-      {{- include "myeventsappchart.selectorLabels" . | nindent 8 }}
+      {{- include "myapp.selectorLabels" . | nindent 8 }}
     spec:
       containers:
       - env:
@@ -24,22 +24,22 @@ spec:
           valueFrom:
             configMapKeyRef:
               key: db_host
-              name: {{ include "myeventsappchart.fullname" . }}-db-configmap
+              name: {{ include "myapp.fullname" . }}-db-configmap
         - name: DB_NAME
           valueFrom:
             configMapKeyRef:
               key: db_name
-              name: {{ include "myeventsappchart.fullname" . }}-db-configmap
+              name: {{ include "myapp.fullname" . }}-db-configmap
         - name: DB_PASSWORD
           valueFrom:
             secretKeyRef:
               key: password
-              name: {{ include "myeventsappchart.fullname" . }}-db-secrets
+              name: {{ include "myapp.fullname" . }}-db-secrets
         - name: DB_USER
           valueFrom:
             secretKeyRef:
               key: username
-              name: {{ include "myeventsappchart.fullname" . }}-db-secrets
+              name: {{ include "myapp.fullname" . }}-db-secrets
         - name: KUBERNETES_CLUSTER_DOMAIN
           value: {{ quote .Values.kubernetesClusterDomain }}
         image: {{ .Values.api.api.image.repository }}:{{ .Values.api.api.image.tag | default
@@ -57,13 +57,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "myeventsappchart.fullname" . }}-api-cluster-ip-service
+  name: {{ include "myapp.fullname" . }}-api-cluster-ip-service
   labels:
-  {{- include "myeventsappchart.labels" . | nindent 4 }}
+  {{- include "myapp.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.apiClusterIpService.type }}
   selector:
     component: api
-  {{- include "myeventsappchart.selectorLabels" . | nindent 4 }}
+  {{- include "myapp.selectorLabels" . | nindent 4 }}
   ports:
 	{{- .Values.apiClusterIpService.ports | toYaml | nindent 2 -}}
