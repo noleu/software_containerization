@@ -1,0 +1,29 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: frontend-developer
+  namespace: event-app
+rules:
+- apiGroups: [""]
+  resources: ["deployments", "services", "pods", "secrets", "configmaps"]
+  resourceNames:
+    - frontend-cluster-ip-service
+    - frontend
+    - frontend-configmap
+  verbs: ["*"]
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: frontend-developer-binding
+  namespace: event-app
+roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: frontend-developer
+subjects:
+- kind: Group
+  name: event-app-frontend-developer
+  apiGroup: rbac.authorization.k8s.io
