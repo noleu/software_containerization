@@ -1,0 +1,25 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: app-adminstrator-role
+  namespace: event-app
+rules:
+  - apiGroups: [""]
+    resources: ["*"]
+    verbs: ["*"]
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: app-adminstrator-role-binding
+  namespace: event-app
+roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: app-adminstrator-role
+subjects:
+  - kind: Group
+    name: event-app-adminstrator
+    apiGroup: rbac.authorization.k8s.io
