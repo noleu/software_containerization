@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "myeventsappchart.fullname" . }}-database
+  labels:
+    component: database
+  {{- include "myeventsappchart.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.database.replicas }}
+  selector:
+    matchLabels:
+      component: database
+    {{- include "myeventsappchart.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        component: database
+        io.kompose.network/software-containerization-backend-db: "true"
+      {{- include "myeventsappchart.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+      - env:
+        - name: POSTGRES_DB
+          valueFrom:
+            configMapKeyRef:
+              key: db_name
+              name: {{ include "myeventsappchart.fullname" . }}-db-configmap
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: password
+              name: {{ include "myeventsappchart.fullname" . }}-db-secrets
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              key: username
+              name: {{ include "myeventsappchart.fullname" . }}-db-secrets
+        - name: KUBERNETES_CLUSTER_DOMAIN
+          value: {{ quote .Values.kubernetesClusterDomain }}
+        image: {{ .Values.database.database.image.repository }}:{{ .Values.database.database.image.tag
+          | default .Chart.AppVersion }}
+        name: database
+        ports:
+        - containerPort: 5432
+          hostPort: 5432
+          protocol: TCP
+        resources: {}
+        volumeMounts:
+        - mountPath: /var/lib/postgresql/data
+          name: db-data-storage
+          subPath: postgres
+      restartPolicy: Always
+      volumes:
+      - name: db-data-storage
+        persistentVolumeClaim:
+          claimName: {{ include "myeventsappchart.fullname" . }}-db-pvc-claim0
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "myeventsappchart.fullname" . }}-database-cluster-ip-service
+  labels:
+  {{- include "myeventsappchart.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.databaseClusterIpService.type }}
+  selector:
+    component: database
+  {{- include "myeventsappchart.selectorLabels" . | nindent 4 }}
+  ports:
+	{{- .Values.databaseClusterIpService.ports | toYaml | nindent 2 -}}
