@@ -6,8 +6,6 @@ metadata:
   {{- include "myapp.labels" . | nindent 4 }}
   annotations:
     cert-manager.io/cluster-issuer: managed-cert
-    nginx.ingress.kubernetes.io/rewrite-target: /$2
-    nginx.ingress.kubernetes.io/ssl-redirect: "false"
 spec:
   ingressClassName: nginx
   rules:
