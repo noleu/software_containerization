@@ -13,7 +13,7 @@ on:
   push:
     branches: 
       - main
-      - feat/k8
+      - feat/helm
       - helm-fix
 
 jobs:
