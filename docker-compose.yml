@@ -24,6 +24,9 @@ services:
       - 'seccomp:unconfined'
     cap_add:
       - SYS_PTRACE
+    # command: /dlv --headless --listen=:40000 --api-version=2 exec /server
+    volumes:
+      - .:/app
     environment:
       DB_HOST: database
       DB_USER: postgres
@@ -31,6 +34,7 @@ services:
       DB_NAME: Events
     networks:
       - backend_db
+      - frontend-api
 
   frontend:
     build:
@@ -41,11 +45,14 @@ services:
     ports:
       - '5173:5173'
     environment:
-      VITE_API_URL: http://localhost:8080
+      VITE_API_URL: http://localhost:8080/api
       NODE_ENV: development
     volumes:
       - ./frontend:/app
       - /app/node_modules
+    networks:
+      - frontend-api
 
 networks:
   backend_db:
+  frontend-api:
