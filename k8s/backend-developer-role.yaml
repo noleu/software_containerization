@@ -27,6 +27,7 @@ roleRef:
     kind: Role
     name: backend-developer
 subjects:
-- kind: User
-  name: cluster-user-1@software-containerization-2024.iam.gserviceaccount.com
-  apiGroup: rbac.authorization.k8s.io
+- kind: ServiceAccount
+  name: cluster-user-1
+#  apiGroup: rbac.authorization.k8s.io
+  apiGroup: ""
