@@ -43,7 +43,7 @@ spec:
           name: api
           ports:
             - containerPort: 8080
-              hostPort: 8080
+              # hostPort: 8080
               protocol: TCP
           resources: 
             requests:
