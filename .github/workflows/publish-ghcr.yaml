@@ -13,6 +13,8 @@ on:
   push:
     branches: 
       - main
+      - feat/helm
+      - helm-fix
       - feat/k8
       - net-policies
 
