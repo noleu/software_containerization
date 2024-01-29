@@ -28,7 +28,7 @@ spec:
           image: postgres:16
           ports:
             - containerPort: 5432
-              hostPort: 5432
+              # hostPort: 5432
               protocol: TCP
 
           env:
