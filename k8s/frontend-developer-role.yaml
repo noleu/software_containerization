@@ -4,7 +4,7 @@ metadata:
   name: frontend-developer
   namespace: default
 rules:
-- apiGroups: [""]
+- apiGroups: ["", "/","extensions", "apps", "networking.k8s.io"]
   resources: ["deployments", "services", "pods", "secrets", "configmaps"]
   resourceNames:
     - frontend-cluster-ip-service
