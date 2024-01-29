@@ -2,11 +2,11 @@ package Handlers
 
 import (
 	"net/http"
-	"software_containerization/Models"
 	"software_containerization/DTOs"
+	"software_containerization/Models"
+
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
-	"errors"
 )
 
 func CreateEventHandler(db *gorm.DB) gin.HandlerFunc {
@@ -19,19 +19,6 @@ func CreateEventHandler(db *gorm.DB) gin.HandlerFunc {
 			return
 		}
 
-		// Validate that the Organizer exists
-		var organizer Models.User
-		if err := db.First(&organizer, newEvent.OrganizerId).Error; err != nil {
-			if errors.Is(err, gorm.ErrRecordNotFound) {
-				c.JSON(http.StatusBadRequest, gin.H{"error": "Organizer not found"})
-				return
-			} else {
-				c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-				return
-			}
-		}
-
-		// Create the event if the organizer is valid
 		if result := db.Create(&newEvent); result.Error != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
 			return
@@ -43,7 +30,6 @@ func CreateEventHandler(db *gorm.DB) gin.HandlerFunc {
 func GetEventsHandler(db *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		eventId := c.Query("id")
-		userId := c.Query("userId")
 
 		if eventId != "" {
 			var event Models.Event
@@ -55,18 +41,8 @@ func GetEventsHandler(db *gorm.DB) gin.HandlerFunc {
 			return
 		}
 
-		if userId != "" {
-			var events []Models.Event
-			if result := db.Where("organizer_id = ?", userId).Find(&events); result.Error != nil {
-				c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
-				return
-			}
-			c.JSON(http.StatusOK, events)
-			return
-		}
-
 		var events []Models.Event
-		if result := db.Preload("Organizer").Find(&events); result.Error != nil {
+		if result := db.Find(&events); result.Error != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
 			return
 		}
