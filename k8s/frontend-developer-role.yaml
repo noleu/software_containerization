@@ -2,7 +2,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: frontend-developer
-  namespace: event-app
+  namespace: default
 rules:
 - apiGroups: [""]
   resources: ["deployments", "services", "pods", "secrets", "configmaps"]
@@ -18,7 +18,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: frontend-developer-binding
-  namespace: event-app
+  namespace: default
 roleRef:
     apiGroup: rbac.authorization.k8s.io
     kind: Role

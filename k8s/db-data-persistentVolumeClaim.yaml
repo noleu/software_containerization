@@ -4,7 +4,7 @@ metadata:
   labels:
     component: database
   name: db-pvc-claim0
-  namespace: event-app
+  namespace: default
 spec:
   accessModes:
     - ReadWriteOnce

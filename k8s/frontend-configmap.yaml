@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: frontend-configmap
-  namespace: event-app
+  namespace: default
 data:
   api_url: "api-cluster-ip-service"
   node_env: "production"
