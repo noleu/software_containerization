@@ -20,6 +20,12 @@ roleRef:
     kind: Role
     name: app-adminstrator-role
 subjects:
-  - kind: Group
-    name: event-app-adminstrator
+  - kind: User
+    name: noleu66@googelmail.com
+    apiGroup: rbac.authorization.k8s.io
+  - kind: User
+    name: qimolin9@gmail.com
+    apiGroup: rbac.authorization.k8s.io
+  - kind: User
+    name: Raw1.alsaadi@gmail.com
     apiGroup: rbac.authorization.k8s.io
