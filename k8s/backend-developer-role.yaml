@@ -4,7 +4,7 @@ metadata:
   name: backend-developer
   namespace: default
 rules:
-- apiGroups: [""]
+- apiGroups: ["/","extensions", "apps"]
   resources: ["deployments", "services", "pods", "secrets", "configmaps"]
   resourceNames:
     - api-cluster-ip-service
