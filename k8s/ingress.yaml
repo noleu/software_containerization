@@ -4,9 +4,9 @@ metadata:
   name: ingress-service
   namespace: default
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt
+    cert-manager.io/cluster-issuer: managed-cert
 spec:
-  ingressClassName: public
+  ingressClassName: nginx
   rules:
   - host: myeventsapp.com
     http:
