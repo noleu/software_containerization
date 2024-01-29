@@ -13,8 +13,6 @@ on:
   push:
     branches: 
       - main
-      - feat/helm
-      - helm-fix
 
 jobs:
   build_and_push_backend:
