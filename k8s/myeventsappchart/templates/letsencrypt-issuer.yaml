@@ -1,9 +1,9 @@
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
-  name: {{ include "myeventsappchart.fullname" . }}-letsencrypt
+  name: {{ include "myapp.fullname" . }}-letsencrypt
   labels:
-  {{- include "myeventsappchart.labels" . | nindent 4 }}
+  {{- include "myapp.labels" . | nindent 4 }}
 spec:
   acme:
     email: qimolin9@gmail.com
