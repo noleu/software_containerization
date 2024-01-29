@@ -42,7 +42,6 @@ spec:
         name: database
         ports:
         - containerPort: 5432
-          hostPort: 5432
           protocol: TCP
         resources: {}
         volumeMounts:

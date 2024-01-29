@@ -47,7 +47,7 @@ spec:
         name: api
         ports:
         - containerPort: 8080
-          hostPort: 8080
+          # hostPort: 8080
           protocol: TCP
         resources: {{- toYaml .Values.api.api.resources | nindent 10 }}
         securityContext: {{- toYaml .Values.api.api.containerSecurityContext | nindent

@@ -15,8 +15,8 @@ on:
       - main
       - feat/helm
       - helm-fix
-      - feat/k8
       - net-policies
+      
 
 jobs:
   build_and_push_backend:
