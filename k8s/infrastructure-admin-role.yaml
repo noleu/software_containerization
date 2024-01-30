@@ -31,7 +31,7 @@ metadata:
 roleRef:
     apiGroup: rbac.authorization.k8s.io
     kind: Role
-    name: infrastructure-admin
+    name: infrastructure-admin-role
 subjects:
 - kind: ServiceAccount
   name: infrastructure-admin
