@@ -39,3 +39,10 @@ subjects:
 #  name: cluster-user-2@software-containerization-2024.iam.gserviceaccount.com
 #  apiGroup: rbac.authorization.k8s.io
   apiGroup: ""
+---
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: infrastructure-admin
+  namespace: default
