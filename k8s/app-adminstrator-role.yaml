@@ -1,0 +1,31 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: app-adminstrator-role
+  namespace: default
+rules:
+  - apiGroups: [""]
+    resources: ["*"]
+    verbs: ["*"]
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: app-adminstrator-role-binding
+  namespace: default
+roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: app-adminstrator-role
+subjects:
+  - kind: User
+    name: noleu66@googelmail.com
+    apiGroup: rbac.authorization.k8s.io
+  - kind: User
+    name: qimolin9@gmail.com
+    apiGroup: rbac.authorization.k8s.io
+  - kind: User
+    name: Raw1.alsaadi@gmail.com
+    apiGroup: rbac.authorization.k8s.io

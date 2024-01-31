@@ -2,6 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: frontend-configmap
+  namespace: default
 data:
-  api_url: api-cluster-ip-service
-  node_env: production
+  api_url: "api-cluster-ip-service"
+  node_env: "production"
