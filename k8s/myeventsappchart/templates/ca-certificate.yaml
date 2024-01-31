@@ -4,9 +4,21 @@ metadata:
   name: ca-certificate
   namespace: default
 spec:
-  secretName: ca-certificate-secret
-  commonName: "My CA"
   isCA: true
+  commonName: "My CA"
+  secretName: ca-certificate-secret
+  privateKey:
+    algorithm: ECDSA
+    size: 256
   issuerRef:
     name: selfsigned-issuer
     kind: Issuer
+  subject:
+    countries: 
+      - "Netherlands"
+    localities:
+      - "Amsterdam"
+    organizations:
+      - "VU"
+    organizationalUnits:
+      - "CS"

@@ -6,6 +6,7 @@ metadata:
   {{- include "myapp.labels" . | nindent 4 }}
   annotations:
     cert-manager.io/issuer: ca-issuer
+    cert-manager.io/common-name: myeventsapp.com
 spec:
   ingressClassName: nginx
   rules:

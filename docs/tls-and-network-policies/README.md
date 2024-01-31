@@ -7,6 +7,10 @@
 
 
 ## Steps
+- Install latest ingress controller with the command:
+`kubectl create namespace ingress-nginx
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
+`
 - Install cert-manager CRDs and cert-manager with the command:
 `kubectl create namespace cert-manager
 helm repo add jetstack https://charts.jetstack.io
@@ -15,6 +19,8 @@ helm install cert-manager jetstack/cert-manager --namespace cert-manager --versi
 
 - run Helm chart
 `helm install myapp .`
+
+- Wait on myapp-ingress-service address to populate and check it with the command: `kubectl get ingress`
 
 - Verify the connection with openssl
 `openssl s_client -connect myeventsapp.com:443 -servername myeventsapp.com`
@@ -25,23 +31,9 @@ helm install cert-manager jetstack/cert-manager --namespace cert-manager --versi
 - Extract the CA certificate from the secret in our Kubernetes cluster
 `kubectl get secret ca-certificate-secret -n default -o jsonpath="{.data['tls\.crt']}" | base64 --decode > myCA.pem`
 
-Open Keychain Access on your mac: Go to Applications > Utilities > Keychain Access.
+- This command adds the certificate to the System keychain and marks it as trusted for SSL:
+`sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain myCA.pem`
 
-Select the System Keychain: In the Keychain Access sidebar, select "System" under the Keychains section.
-
-Import the Certificate:
-
-Drag and drop the myCA.pem file into the Keychain Access window, or use File > Import Items and select the "System" keychain as the destination.
-Authenticate as Administrator: You'll be prompted to authenticate with an administrator username and password. This is required because you're modifying the System keychain.
-
-Trust the Certificate:
-
-Find your certificate in the list in the System keychain.
-Double-click on it to open the certificate details.
-Expand the "Trust" section.
-Change "When using this certificate" to "Always Trust".
-Close the certificate window, and you'll be prompted for your administrator password again to save the changes.
-Restart Your Browser or System: After making these changes, you might need to restart your browser or other applications to recognize the new trust settings. In some cases, a system restart may be required for all changes to take effect.
 
 
 # Network Policies
