@@ -13,8 +13,6 @@ on:
   push:
     branches: 
       - main
-      - feat/k8
-      - k8-netpolicy
 
 jobs:
   build_and_push_backend:
