@@ -14,7 +14,7 @@ on:
     branches: 
       - main
       - feat/k8
-      - net-policies
+      - k8-netpolicy
 
 jobs:
   build_and_push_backend:

@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: my-ca-signed-cert
+  namespace: default
+spec:
+  secretName: my-ca-signed-cert-secret
+  dnsNames:
+    - myeventsapp.com
+  issuerRef:
+    name: ca-issuer
+    kind: Issuer
