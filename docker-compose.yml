@@ -9,8 +9,6 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: Events
-    volumes:
-      - ./database/init:/docker-entrypoint-initdb.d
     networks:
       - backend_db
 
@@ -26,11 +24,11 @@ services:
       - 'seccomp:unconfined'
     cap_add:
       - SYS_PTRACE
-    # command: /dlv --headless --listen=:40000 --api-version=2 exec /server
-    volumes:
-      - .:/app
     environment:
-      DATABASE_URL: postgres://postgres:postgres@database:5432/postgres
+      DB_HOST: database
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_NAME: Events
     networks:
       - backend_db
       - frontend-api

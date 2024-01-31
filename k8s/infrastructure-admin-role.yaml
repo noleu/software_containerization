@@ -1,0 +1,46 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: infrastructure-admin-role
+  namespace: default
+rules:
+  - apiGroups: ["", "/", "extensions", "apps", "networking.k8s.io", "networking.gke.io"]
+    verbs:
+      - get
+      - list
+      - watch
+      - create
+      - update
+      - patch
+      - delete
+    resources:
+      - configmaps
+      - ingresses
+      - managedcertificates
+      - networkpolicies
+      - persistentvolumeclaims
+      - services
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: infrastructure-admin-binding
+  namespace: default
+roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: infrastructure-admin-role
+subjects:
+- kind: ServiceAccount
+  name: infrastructure-admin
+  apiGroup: ""
+
+---
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: infrastructure-admin
+  namespace: default

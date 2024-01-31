@@ -1,0 +1,64 @@
+api:
+  api:
+    containerSecurityContext:
+      capabilities:
+        add:
+        - SYS_PTRACE
+    image:
+      repository: ghcr.io/noleu/event_calendar_api
+      tag: latest
+    resources:
+      limits:
+        cpu: 500m
+        memory: 384Mi
+      requests:
+        cpu: 500m
+        memory: 384Mi
+  replicas: 1
+apiClusterIpService:
+  ports:
+  - port: 8080
+    targetPort: 8080
+  type: ClusterIP
+database:
+  database:
+    image:
+      repository: postgres
+      tag: "16"
+  replicas: 1
+databaseClusterIpService:
+  ports:
+  - port: 5432
+    targetPort: 5432
+  type: ClusterIP
+dbConfigmap:
+  dbHost: myapp-database-cluster-ip-service
+  dbName: Events
+dbSecrets:
+  password: cG9zdGdyZXM=
+  username: cG9zdGdyZXM=
+frontend:
+  eventFrontend:
+    image:
+      repository: ghcr.io/noleu/event_calendar_frontend
+      tag: latest
+    resources:
+      limits:
+          cpu: 500m
+          memory: 384Mi
+      requests:
+          cpu: 500m
+          memory: 384Mi
+  replicas: 1
+frontendClusterIpService:
+  ports:
+  - port: 80
+    targetPort: 80
+  type: ClusterIP
+frontendConfigmap:
+  apiUrl: api-cluster-ip-service
+  nodeEnv: production
+kubernetesClusterDomain: cluster.local
+pvc:
+  dbPvcClaim0:
+    storageRequest: 500Mi

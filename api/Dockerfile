@@ -13,6 +13,10 @@ RUN chmod a+x /server
 FROM  debian:buster
 EXPOSE 8080
 WORKDIR /
+
+# Install wget
+RUN apt-get update && apt-get install -y wget && rm -rf /var/lib/apt/lists/*
+
 COPY --from=build-env /server /
 # CMD ["/server"]
 ENTRYPOINT ["/server"]
