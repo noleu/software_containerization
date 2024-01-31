@@ -40,7 +40,7 @@ spec:
                 name: db-secrets
                 key: username
 
-          image: https://ghcr.io/noleu/event_calendar_api
+          image: ghcr.io/noleu/event_calendar_api
           name: api
           ports:
             - containerPort: 8080
@@ -48,11 +48,11 @@ spec:
               protocol: TCP
           resources: 
             requests:
+              cpu: 500m
+              memory: 256Mi
+            limits:
               cpu: 1
               memory: 512Mi
-            limits:
-              cpu: 2
-              memory: 1024Mi
           securityContext:
             capabilities:
               add:

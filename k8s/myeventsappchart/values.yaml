@@ -9,11 +9,11 @@ api:
       tag: latest
     resources:
       limits:
-        cpu: "2"
-        memory: 1Gi
+        cpu: 500m
+        memory: 384Mi
       requests:
-        cpu: "1"
-        memory: 512Mi
+        cpu: 500m
+        memory: 384Mi
   replicas: 1
 apiClusterIpService:
   ports:
