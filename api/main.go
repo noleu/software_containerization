@@ -7,48 +7,32 @@ import (
 	"gorm.io/gorm"
 	"log"
 	"os"
-	"software_containerization/Models"
 	"software_containerization/Handlers"
+	"software_containerization/Models"
 	"time"
-)
 
-func InitializeRoles(db *gorm.DB) {
-	roles := []string{"Organizer", "Participant", "Guest"}
-	for _, roleName := range roles {
-		var role Models.Role
-		result := db.First(&role, "name = ?", roleName)
-		if result.Error == gorm.ErrRecordNotFound {
-			// Role not found, create it
-			newRole := Models.Role{Name: roleName}
-			db.Create(&newRole)
-			log.Printf("Role '%s' created.\n", roleName)
-		}
-	}
-}
+	"github.com/gin-contrib/cors"
+	"github.com/gin-gonic/gin"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
+)
 
 func main() {
 	// set the flags for the logging package to give the filename in the logs
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
 
-	log.Println("starting sever")
+	log.Println("starting server")
 	db := database_init()
 
 	r := gin.Default()
+	r.Use(cors.Default())
 
-	// Initialize roles
-	InitializeRoles(db)
+	api := r.Group("/api")
 
-	r.GET("/roles", Handlers.GetRolesHandler(db))
-	r.GET("/roles/:id", Handlers.GetRoleByIdHandler(db))
-
-	r.POST("/user", Handlers.CreateUserHandler(db))
-	r.GET("/users", Handlers.GetUsersHandler(db)) // get all users, get user by id, or by email query params
-	r.PUT("/users/:id", Handlers.UpdateUserHandler(db))
-
-	r.POST("/events", Handlers.CreateEventHandler(db))
-	r.GET("/events", Handlers.GetEventsHandler(db)) // get all events, get event by id, or by userId query params
-	r.DELETE("/events/:id", Handlers.DeleteEventHandler(db))
-	r.PUT("/events/:id", Handlers.UpdateEventHandler(db))
+	api.POST("/events", Handlers.CreateEventHandler(db))
+	api.GET("/events", Handlers.GetEventsHandler(db)) // get all events, get event by id, or by userId query params
+	api.DELETE("/events/:id", Handlers.DeleteEventHandler(db))
+	api.PUT("/events/:id", Handlers.UpdateEventHandler(db))
 
 	r.Run(":8080")
 }
@@ -88,7 +72,7 @@ func database_init() *gorm.DB {
 
 	log.Println("connection to database established")
 	log.Println("migrating database")
-	err = db.AutoMigrate(&Models.Event{}, &Models.User{}, &Models.Role{})
+	err = db.AutoMigrate(&Models.Event{})
 
 	if err != nil {
 		log.Fatal(err)
