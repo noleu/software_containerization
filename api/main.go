@@ -31,7 +31,7 @@ func main() {
 	api.DELETE("/events/:id", Handlers.DeleteEventHandler(db))
 	api.PUT("/events/:id", Handlers.UpdateEventHandler(db))
 
-	r.Run(":8080")
+	r.Run(":80")
 }
 
 func database_init() *gorm.DB {

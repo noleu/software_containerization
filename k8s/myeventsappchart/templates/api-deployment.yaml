@@ -46,8 +46,8 @@ spec:
           .Chart.AppVersion }}
         name: api
         ports:
-        - containerPort: 8080
-          hostPort: 8080
+        - containerPort: 80
+          hostPort: 80
           protocol: TCP
         resources: {{- toYaml .Values.api.api.resources | nindent 10 }}
         securityContext: {{- toYaml .Values.api.api.containerSecurityContext | nindent
