@@ -1,0 +1,53 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ include "helmcharts.fullname" . }}-infrastructure-admin-role
+  labels:
+  {{- include "helmcharts.labels" . | nindent 4 }}
+rules:
+- apiGroups:
+  - ""
+  - /
+  - extensions
+  - apps
+  - networking.k8s.io
+  - networking.gke.io
+  resources:
+  - configmaps
+  - ingresses
+  - managedcertificates
+  - networkpolicies
+  - persistentvolumeclaims
+  - services
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ include "helmcharts.fullname" . }}-infrastructure-admin-binding
+  labels:
+  {{- include "helmcharts.labels" . | nindent 4 }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: '{{ include "helmcharts.fullname" . }}-infrastructure-admin-role'
+subjects:
+- kind: ServiceAccount
+  name: '{{ include "helmcharts.fullname" . }}-infrastructure-admin'
+  namespace: '{{ .Release.Namespace }}'
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ include "helmcharts.fullname" . }}-infrastructure-admin
+  labels:
+  {{- include "helmcharts.labels" . | nindent 4 }}
+  annotations:
+    {{- toYaml .Values.infrastructureAdmin.serviceAccount.annotations | nindent 4 }}

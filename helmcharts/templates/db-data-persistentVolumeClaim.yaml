@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "helmcharts.fullname" . }}-db-pvc-claim0
+  labels:
+    component: database
+  {{- include "helmcharts.labels" . | nindent 4 }}
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.pvc.dbPvcClaim0.storageRequest | quote }}
