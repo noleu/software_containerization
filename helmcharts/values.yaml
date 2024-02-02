@@ -5,7 +5,7 @@ api:
       - SYS_PTRACE
   image:
     repository: ghcr.io/noleu/event_calendar_api
-    tag: latest
+    tag: v1
   resources:
     limits:
       cpu: "1"
@@ -43,7 +43,7 @@ dbSecrets:
 frontend:
   image:
     repository: ghcr.io/noleu/event_calendar_frontend
-    tag: latest
+    tag: v1
   resources:
     limits:
       cpu: 500m
@@ -65,3 +65,11 @@ kubernetesClusterDomain: cluster.local
 pvc:
   dbPvcClaim0:
     storageRequest: 500Mi
+apiHpa:
+  maxReplicas: 5
+  minReplicas: 1
+  averageUtilization: 50
+frontendHpa:
+  maxReplicas: 3
+  minReplicas: 1
+  averageUtilization: 50
