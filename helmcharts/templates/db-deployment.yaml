@@ -37,11 +37,11 @@ spec:
               name: {{ include "helmcharts.fullname" . }}-db-secrets
         - name: KUBERNETES_CLUSTER_DOMAIN
           value: {{ quote .Values.kubernetesClusterDomain }}
-        image: {{ .Values.database.database.image.repository }}:{{ .Values.database.database.image.tag
+        image: {{ .Values.database.image.repository }}:{{ .Values.database.image.tag
           | default .Chart.AppVersion }}
         name: database
         ports:
-        - containerPort: 5432
+        - containerPort: {{ .Values.database.containerPort }}
           protocol: TCP
         resources: {}
         volumeMounts:

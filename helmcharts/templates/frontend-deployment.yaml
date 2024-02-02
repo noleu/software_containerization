@@ -19,12 +19,11 @@ spec:
       containers:
         - name: KUBERNETES_CLUSTER_DOMAIN
           value: {{ quote .Values.kubernetesClusterDomain }}
-        image: {{ .Values.frontend.myAppEventFrontend.image.repository }}:{{ .Values.frontend.myAppEventFrontend.image.tag
-          | default .Chart.AppVersion }}
+        image: {{ .Values.frontend.image.repository }}:{{ .Values.frontend.image.tag | default .Chart.AppVersion }}
         name: my-app-event-frontend
         ports:
-        - containerPort: 80
-        resources: {{- toYaml .Values.frontend.myAppEventFrontend.resources | nindent 10
+        - containerPort: {{ .Values.frontend.containerPort }}
+        resources: {{- toYaml .Values.frontend.resources | nindent 10
           }}
       restartPolicy: Always
 ---
