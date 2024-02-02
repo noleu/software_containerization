@@ -4,5 +4,5 @@ metadata:
   name: my-app-frontend-configmap
   namespace: default
 data:
-  api_url: "api-cluster-ip-service"
+  api_url: "my-app-api-cluster-ip-service"
   node_env: "production"
