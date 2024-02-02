@@ -17,17 +17,6 @@ spec:
       {{- include "helmcharts.selectorLabels" . | nindent 8 }}
     spec:
       containers:
-      - env:
-        - name: NODE_ENV
-          valueFrom:
-            configMapKeyRef:
-              key: node_env
-              name: {{ include "helmcharts.fullname" . }}-frontend-configmap
-        - name: VITE_API_URL
-          valueFrom:
-            configMapKeyRef:
-              key: api_url
-              name: {{ include "helmcharts.fullname" . }}-frontend-configmap
         - name: KUBERNETES_CLUSTER_DOMAIN
           value: {{ quote .Values.kubernetesClusterDomain }}
         image: {{ .Values.frontend.myAppEventFrontend.image.repository }}:{{ .Values.frontend.myAppEventFrontend.image.tag
