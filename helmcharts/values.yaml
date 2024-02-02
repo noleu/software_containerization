@@ -58,6 +58,8 @@ frontendClusterIpService:
   - port: 80
     targetPort: 80
   type: ClusterIP
+frontendConfigmap:
+  apiUrl: api-cluster-ip-service
 infrastructureAdmin:
   serviceAccount:
     annotations: {}

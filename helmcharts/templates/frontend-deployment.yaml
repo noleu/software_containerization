@@ -18,6 +18,11 @@ spec:
     spec:
       containers:
       - env:
+        - name: API_URL
+          valueFrom:
+            configMapKeyRef:
+              key: api_url
+              name: {{ include "helmcharts.fullname" . }}-frontend-configmap
         - name: KUBERNETES_CLUSTER_DOMAIN
           value: {{ quote .Values.kubernetesClusterDomain }}
         name: my-app-event-frontend

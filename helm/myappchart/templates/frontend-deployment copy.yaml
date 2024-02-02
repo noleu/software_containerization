@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: my-app-frontend
+  name: frontend
   namespace: default
 spec:
   replicas: 1
@@ -16,12 +16,6 @@ spec:
       containers:
         - name: event-frontend
           image: ghcr.io/noleu/event_calendar_frontend:latest
-          env:
-            - name: API_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: frontend-configmap
-                  key: api_url
           ports:
             - containerPort: 80
           resources: 
@@ -38,7 +32,7 @@ status: {}
 apiVersion: v1
 kind: Service
 metadata:
-  name: my-app-frontend-cluster-ip-service
+  name: frontend-cluster-ip-service
   namespace: default
 spec:
   type: ClusterIP
