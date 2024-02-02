@@ -4,7 +4,7 @@ metadata:
   creationTimestamp: null
   labels:
     component: database
-  name: database
+  name: my-app-database
   namespace: default
 spec:
   replicas: 1
@@ -22,51 +22,42 @@ spec:
       volumes:
         - name: db-data-storage
           persistentVolumeClaim:
-            claimName: db-pvc-claim0
+            claimName: my-app-db-pvc-claim0
       containers:
         - name: database
           image: postgres:16
           ports:
             - containerPort: 5432
-              # hostPort: 5432
               protocol: TCP
 
           env:
             - name: POSTGRES_DB
               valueFrom: 
                 configMapKeyRef:
-                  name: db-configmap
+                  name: my-app-db-configmap
                   key: db_name
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: db-secrets
+                  name: my-app-db-secrets
                   key: password
-            
             - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:
-                  name: db-secrets
+                  name: my-app-db-secrets
                   key: username
 
           volumeMounts:
             - name: db-data-storage
               mountPath: /var/lib/postgresql/data
               subPath: postgres
-          # resources: 
-          #   requests:
-          #     cpu: 1
-          #     memory: 2Gi
-          #   limits:
-          #     cpu: 2
-          #     memory: 4Gi
       restartPolicy: Always
 status: {}
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: database-cluster-ip-service
+  name: my-app-database-cluster-ip-service
   namespace: default
 spec:
   selector:

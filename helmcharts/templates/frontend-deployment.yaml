@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "myapp.fullname" . }}-frontend
+  name: {{ include "helmcharts.fullname" . }}-frontend
   labels:
-  {{- include "myapp.labels" . | nindent 4 }}
+  {{- include "helmcharts.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.frontend.replicas }}
   selector:
     matchLabels:
       app: frontend
-    {{- include "myapp.selectorLabels" . | nindent 6 }}
+    {{- include "helmcharts.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
         app: frontend
-      {{- include "myapp.selectorLabels" . | nindent 8 }}
+      {{- include "helmcharts.selectorLabels" . | nindent 8 }}
     spec:
       containers:
       - env:
@@ -22,32 +22,33 @@ spec:
           valueFrom:
             configMapKeyRef:
               key: node_env
-              name: {{ include "myapp.fullname" . }}-frontend-configmap
+              name: {{ include "helmcharts.fullname" . }}-frontend-configmap
         - name: VITE_API_URL
           valueFrom:
             configMapKeyRef:
               key: api_url
-              name: {{ include "myapp.fullname" . }}-frontend-configmap
+              name: {{ include "helmcharts.fullname" . }}-frontend-configmap
         - name: KUBERNETES_CLUSTER_DOMAIN
           value: {{ quote .Values.kubernetesClusterDomain }}
-        image: {{ .Values.frontend.eventFrontend.image.repository }}:{{ .Values.frontend.eventFrontend.image.tag
+        image: {{ .Values.frontend.myAppEventFrontend.image.repository }}:{{ .Values.frontend.myAppEventFrontend.image.tag
           | default .Chart.AppVersion }}
-        name: event-frontend
+        name: my-app-event-frontend
         ports:
         - containerPort: 80
-        resources: {{- toYaml .Values.frontend.eventFrontend.resources | nindent 10 }}
+        resources: {{- toYaml .Values.frontend.myAppEventFrontend.resources | nindent 10
+          }}
       restartPolicy: Always
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "myapp.fullname" . }}-frontend-cluster-ip-service
+  name: {{ include "helmcharts.fullname" . }}-frontend-cluster-ip-service
   labels:
-  {{- include "myapp.labels" . | nindent 4 }}
+  {{- include "helmcharts.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.frontendClusterIpService.type }}
   selector:
     app: frontend
-  {{- include "myapp.selectorLabels" . | nindent 4 }}
+  {{- include "helmcharts.selectorLabels" . | nindent 4 }}
   ports:
 	{{- .Values.frontendClusterIpService.ports | toYaml | nindent 2 -}}

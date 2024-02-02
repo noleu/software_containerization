@@ -1,0 +1,37 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ include "helmcharts.fullname" . }}-app-adminstrator-role
+  labels:
+  {{- include "helmcharts.labels" . | nindent 4 }}
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - '*'
+  verbs:
+  - '*'
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ include "helmcharts.fullname" . }}-app-adminstrator-role-binding
+  labels:
+  {{- include "helmcharts.labels" . | nindent 4 }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: '{{ include "helmcharts.fullname" . }}-app-adminstrator-role'
+subjects:
+- apiGroup: rbac.authorization.k8s.io
+  kind: User
+  name: noleu66@googelmail.com
+  namespace: '{{ .Release.Namespace }}'
+- apiGroup: rbac.authorization.k8s.io
+  kind: User
+  name: qimolin9@gmail.com
+  namespace: '{{ .Release.Namespace }}'
+- apiGroup: rbac.authorization.k8s.io
+  kind: User
+  name: Raw1.alsaadi@gmail.com
+  namespace: '{{ .Release.Namespace }}'

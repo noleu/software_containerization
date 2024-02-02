@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{ include "myapp.fullname" . }}-db-pvc-claim0
+  name: {{ include "helmcharts.fullname" . }}-db-pvc-claim0
   labels:
     component: database
-  {{- include "myapp.labels" . | nindent 4 }}
+  {{- include "helmcharts.labels" . | nindent 4 }}
 spec:
   accessModes:
   - ReadWriteOnce

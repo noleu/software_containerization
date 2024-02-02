@@ -1,12 +1,11 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ include "myapp.fullname" . }}-ingress-service
+  name: {{ include "helmcharts.fullname" . }}-ingress-service
   labels:
-  {{- include "myapp.labels" . | nindent 4 }}
+  {{- include "helmcharts.labels" . | nindent 4 }}
   annotations:
-    cert-manager.io/issuer: ca-issuer
-    cert-manager.io/common-name: myeventsapp.com
+    cert-manager.io/cluster-issuer: managed-cert
 spec:
   ingressClassName: nginx
   rules:
@@ -15,7 +14,7 @@ spec:
       paths:
       - backend:
           service:
-            name: '{{ include "myapp.fullname" . }}-frontend-cluster-ip-service'
+            name: '{{ include "helmcharts.fullname" . }}-frontend-cluster-ip-service'
             port:
               number: 80
         path: /
@@ -23,5 +22,4 @@ spec:
   tls:
   - hosts:
     - myeventsapp.com
-    secretName: my-ca-signed-cert-secret
-    
+    secretName: my-app-myingress-cert
