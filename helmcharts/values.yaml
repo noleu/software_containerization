@@ -6,13 +6,13 @@ api:
   image:
     repository: ghcr.io/noleu/event_calendar_api
     tag: v1
-  resources:
-    limits:
-      cpu: "1"
-      memory: 512Mi
-    requests:
-      cpu: 500m
-      memory: 256Mi
+  # resources:
+  #   limits:
+  #     cpu: "1"
+  #     memory: 512Mi
+  #   requests:
+  #     cpu: 500m
+  #     memory: 256Mi
   containerPort: 80
   replicas: 1
 apiClusterIpService:
@@ -44,13 +44,13 @@ frontend:
   image:
     repository: ghcr.io/noleu/event_calendar_frontend
     tag: v1
-  resources:
-    limits:
-      cpu: 500m
-      memory: 384Mi
-    requests:
-      cpu: 250m
-      memory: 128Mi
+  # resources:
+  #   limits:
+  #     cpu: 500m
+  #     memory: 384Mi
+  #   requests:
+  #     cpu: 250m
+  #     memory: 128Mi
   replicas: 1
   containerPort: 80
 frontendClusterIpService:
