@@ -16,12 +16,6 @@ spec:
       containers:
         - name: event-frontend
           image: ghcr.io/noleu/event_calendar_frontend:latest
-          env:
-            - name: API_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: frontend-configmap
-                  key: api_url
           ports:
             - containerPort: 80
           resources: 

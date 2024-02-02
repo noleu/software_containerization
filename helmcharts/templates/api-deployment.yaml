@@ -56,7 +56,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "helmcharts.fullname" . }}-api-cluster-ip-service
+  name: api-cluster-ip-service
   labels:
   {{- include "helmcharts.labels" . | nindent 4 }}
 spec:
