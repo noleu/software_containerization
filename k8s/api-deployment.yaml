@@ -43,8 +43,7 @@ spec:
           image: ghcr.io/noleu/event_calendar_api:latest
           name: api
           ports:
-            - containerPort: 8080
-              # hostPort: 8080
+            - containerPort: 80
               protocol: TCP
           resources: 
             requests:
@@ -70,6 +69,6 @@ spec:
     component: api
   type: ClusterIP
   ports:
-    - port: 8080
-      targetPort: 8080
+    - port: 80
+      targetPort: 80
   

@@ -11,7 +11,7 @@ RUN chmod a+x /server
 
 # Final stage
 FROM  debian:buster
-EXPOSE 8080
+EXPOSE 80
 WORKDIR /
 
 # Install wget
