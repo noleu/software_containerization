@@ -6,7 +6,7 @@ spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: api
+    name: {{ include "helmcharts.fullname" . }}-api
   minReplicas: {{ .Values.apiHpa.minReplicas }}
   maxReplicas: {{ .Values.apiHpa.maxReplicas }}
   metrics:
