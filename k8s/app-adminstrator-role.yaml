@@ -1,7 +1,7 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  name: app-adminstrator-role
+  name: my-app-app-adminstrator-role
   namespace: default
 rules:
   - apiGroups: [""]
@@ -13,12 +13,12 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: app-adminstrator-role-binding
+  name: my-app-app-adminstrator-role-binding
   namespace: default
 roleRef:
     apiGroup: rbac.authorization.k8s.io
     kind: Role
-    name: app-adminstrator-role
+    name: my-app-app-adminstrator-role
 subjects:
   - kind: User
     name: noleu66@googelmail.com

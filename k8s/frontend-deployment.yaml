@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: frontend
+  name: my-app-frontend
   namespace: default
 spec:
   replicas: 1
@@ -14,18 +14,18 @@ spec:
         app: frontend
     spec:
       containers:
-        - name: event-frontend
-          image: ghcr.io/noleu/event_calendar_frontend
+        - name: my-app-event-frontend
+          image: ghcr.io/noleu/event_calendar_frontend:latest
           env:
             - name: NODE_ENV
               valueFrom:
                 configMapKeyRef:
-                  name: frontend-configmap
+                  name: my-app-frontend-configmap
                   key: node_env
             - name: VITE_API_URL
               valueFrom:
                 configMapKeyRef:
-                  name: frontend-configmap
+                  name: my-app-frontend-configmap
                   key: api_url
 
           ports:
@@ -44,7 +44,7 @@ status: {}
 apiVersion: v1
 kind: Service
 metadata:
-  name: frontend-cluster-ip-service
+  name: my-app-frontend-cluster-ip-service
   namespace: default
 spec:
   type: ClusterIP

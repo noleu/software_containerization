@@ -9,17 +9,20 @@ api:
       tag: latest
     resources:
       limits:
-        cpu: 500m
-        memory: 384Mi
+        cpu: "1"
+        memory: 512Mi
       requests:
         cpu: 500m
-        memory: 384Mi
+        memory: 256Mi
   replicas: 1
 apiClusterIpService:
   ports:
   - port: 8080
     targetPort: 8080
   type: ClusterIP
+appDeveloper:
+  serviceAccount:
+    annotations: {}
 database:
   database:
     image:
@@ -32,23 +35,23 @@ databaseClusterIpService:
     targetPort: 5432
   type: ClusterIP
 dbConfigmap:
-  dbHost: myapp-database-cluster-ip-service
+  dbHost: database-cluster-ip-service
   dbName: Events
 dbSecrets:
-  password: cG9zdGdyZXM=
-  username: cG9zdGdyZXM=
+  password: ""
+  username: ""
 frontend:
-  eventFrontend:
+  myAppEventFrontend:
     image:
       repository: ghcr.io/noleu/event_calendar_frontend
       tag: latest
     resources:
       limits:
-          cpu: 500m
-          memory: 384Mi
+        cpu: 500m
+        memory: 384Mi
       requests:
-          cpu: 500m
-          memory: 384Mi
+        cpu: 250m
+        memory: 128Mi
   replicas: 1
 frontendClusterIpService:
   ports:
@@ -58,6 +61,9 @@ frontendClusterIpService:
 frontendConfigmap:
   apiUrl: api-cluster-ip-service
   nodeEnv: production
+infrastructureAdmin:
+  serviceAccount:
+    annotations: {}
 kubernetesClusterDomain: cluster.local
 pvc:
   dbPvcClaim0:

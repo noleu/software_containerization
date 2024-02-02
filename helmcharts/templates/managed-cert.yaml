@@ -1,0 +1,10 @@
+apiVersion: networking.gke.io/v1
+kind: ManagedCertificate
+metadata:
+  name: {{ include "helmcharts.fullname" . }}-managed-cert
+  labels:
+  {{- include "helmcharts.labels" . | nindent 4 }}
+spec:
+  domains:
+  - myeventsapp.com
+  - www.myeventsapp.com

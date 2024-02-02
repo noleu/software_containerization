@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "myapp.fullname" . }}-api
+  name: {{ include "helmcharts.fullname" . }}-api
   labels:
     component: api
-  {{- include "myapp.labels" . | nindent 4 }}
+  {{- include "helmcharts.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.api.replicas }}
   selector:
     matchLabels:
       component: api
-    {{- include "myapp.selectorLabels" . | nindent 6 }}
+    {{- include "helmcharts.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
         component: api
         io.kompose.network/software-containerization-backend-db: "true"
-      {{- include "myapp.selectorLabels" . | nindent 8 }}
+      {{- include "helmcharts.selectorLabels" . | nindent 8 }}
     spec:
       containers:
       - env:
@@ -24,22 +24,22 @@ spec:
           valueFrom:
             configMapKeyRef:
               key: db_host
-              name: {{ include "myapp.fullname" . }}-db-configmap
+              name: {{ include "helmcharts.fullname" . }}-db-configmap
         - name: DB_NAME
           valueFrom:
             configMapKeyRef:
               key: db_name
-              name: {{ include "myapp.fullname" . }}-db-configmap
+              name: {{ include "helmcharts.fullname" . }}-db-configmap
         - name: DB_PASSWORD
           valueFrom:
             secretKeyRef:
               key: password
-              name: {{ include "myapp.fullname" . }}-db-secrets
+              name: {{ include "helmcharts.fullname" . }}-db-secrets
         - name: DB_USER
           valueFrom:
             secretKeyRef:
               key: username
-              name: {{ include "myapp.fullname" . }}-db-secrets
+              name: {{ include "helmcharts.fullname" . }}-db-secrets
         - name: KUBERNETES_CLUSTER_DOMAIN
           value: {{ quote .Values.kubernetesClusterDomain }}
         image: {{ .Values.api.api.image.repository }}:{{ .Values.api.api.image.tag | default
@@ -47,7 +47,6 @@ spec:
         name: api
         ports:
         - containerPort: 8080
-          hostPort: 8080
           protocol: TCP
         resources: {{- toYaml .Values.api.api.resources | nindent 10 }}
         securityContext: {{- toYaml .Values.api.api.containerSecurityContext | nindent
@@ -57,13 +56,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "myapp.fullname" . }}-api-cluster-ip-service
+  name: {{ include "helmcharts.fullname" . }}-api-cluster-ip-service
   labels:
-  {{- include "myapp.labels" . | nindent 4 }}
+  {{- include "helmcharts.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.apiClusterIpService.type }}
   selector:
     component: api
-  {{- include "myapp.selectorLabels" . | nindent 4 }}
+  {{- include "helmcharts.selectorLabels" . | nindent 4 }}
   ports:
 	{{- .Values.apiClusterIpService.ports | toYaml | nindent 2 -}}

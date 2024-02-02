@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: db-configmap
+  name: my-app-db-configmap
   namespace: default
 data:
   db_host: "database-cluster-ip-service"

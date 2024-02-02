@@ -3,7 +3,7 @@ kind: PersistentVolumeClaim
 metadata:
   labels:
     component: database
-  name: db-pvc-claim0
+  name: my-app-db-pvc-claim0
   namespace: default
 spec:
   accessModes:
