@@ -63,6 +63,7 @@ infrastructureAdmin:
     annotations: {}
 kubernetesClusterDomain: cluster.local
 pvc:
+  createPVC: true
   dbPvcClaim0:
     storageRequest: 500Mi
 apiHpa:

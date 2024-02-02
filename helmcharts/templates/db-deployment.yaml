@@ -4,7 +4,7 @@ metadata:
   name: {{ include "helmcharts.fullname" . }}-database
   labels:
     component: database
-  {{- include "helmcharts.labels" . | nindent 4 }}
+    {{- include "helmcharts.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.database.replicas }}
   selector:
@@ -53,6 +53,9 @@ spec:
       - name: db-data-storage
         persistentVolumeClaim:
           claimName: {{ include "helmcharts.fullname" . }}-db-pvc-claim0
+{{- if not .Values.pvc.createPVC }}
+{{- include "helmcharts.db-pvc" . | indent 6 }}
+{{- end }}
 ---
 apiVersion: v1
 kind: Service
