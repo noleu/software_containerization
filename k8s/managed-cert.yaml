@@ -1,8 +1,0 @@
-apiVersion: networking.gke.io/v1
-kind: ManagedCertificate
-metadata:
-  name: my-app-managed-cert
-spec:
-  domains:
-    - myeventsapp.com
-    - www.myeventsapp.com
