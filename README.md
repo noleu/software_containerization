@@ -5,21 +5,13 @@ This project is part of the VU Amsterdam Course Software Containerization.
 
 ## Architecture
 
-# Database
+The architecture is described [here](./docs/uml.md) and [here]().
 
-- Postgres DB v16
+## Docker Image Creation
 
-# Backend
+How to create a new docker image is described [here](./docs/docker-image-creation.md).
 
-- golang 1.21
-- (planned) [gin](https://gin-gonic.com/docs/quickstart/) as http framework
-- [gorm](https://gorm.io/docs/index.html) as ORM
-- (planned) basic for authentication
-- (planned) basic for authorization
-- setup with docker [guide](https://blog.jetbrains.com/go/2020/05/04/go-development-with-docker-containers/)
-  
-# Frontend
-- vue js
-- bun
-- nginx
-- docker
+## Deployment on GKE 
+
+The commands needed to install, scale and uninstall the application on GKE are described [here](./docs/install-scale-uninstall-presentation-commands.md).
+
