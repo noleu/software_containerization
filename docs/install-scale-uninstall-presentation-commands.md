@@ -35,6 +35,6 @@ kubectl create namespace ingress-nginx
 
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
 
-helm install myapp.
+helm install myapp helmcharts
 
 ```
