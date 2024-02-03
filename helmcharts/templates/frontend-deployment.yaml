@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: {{ include "helmcharts.fullname" . }}-frontend
   labels:
-  {{- include "helmcharts.labels" . | nindent 4 }}
+    {{- include "helmcharts.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.frontend.replicas }}
   selector:
@@ -18,25 +18,13 @@ spec:
     spec:
       containers:
       - env:
-        - name: NODE_ENV
-          valueFrom:
-            configMapKeyRef:
-              key: node_env
-              name: {{ include "helmcharts.fullname" . }}-frontend-configmap
-        - name: VITE_API_URL
-          valueFrom:
-            configMapKeyRef:
-              key: api_url
-              name: {{ include "helmcharts.fullname" . }}-frontend-configmap
         - name: KUBERNETES_CLUSTER_DOMAIN
           value: {{ quote .Values.kubernetesClusterDomain }}
-        image: {{ .Values.frontend.myAppEventFrontend.image.repository }}:{{ .Values.frontend.myAppEventFrontend.image.tag
-          | default .Chart.AppVersion }}
         name: my-app-event-frontend
+        image: {{ .Values.frontend.image.repository }}:{{ .Values.frontend.image.tag | default .Chart.AppVersion }}
         ports:
-        - containerPort: 80
-        resources: {{- toYaml .Values.frontend.myAppEventFrontend.resources | nindent 10
-          }}
+          - containerPort: {{ .Values.frontend.containerPort }}
+        resources: {{- toYaml .Values.frontend.resources | nindent 10 }}
       restartPolicy: Always
 ---
 apiVersion: v1
@@ -44,11 +32,11 @@ kind: Service
 metadata:
   name: {{ include "helmcharts.fullname" . }}-frontend-cluster-ip-service
   labels:
-  {{- include "helmcharts.labels" . | nindent 4 }}
+    {{- include "helmcharts.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.frontendClusterIpService.type }}
   selector:
     app: frontend
   {{- include "helmcharts.selectorLabels" . | nindent 4 }}
   ports:
-	{{- .Values.frontendClusterIpService.ports | toYaml | nindent 2 -}}
+    {{- .Values.frontendClusterIpService.ports | toYaml | nindent 2 -}}

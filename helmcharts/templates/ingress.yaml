@@ -22,4 +22,4 @@ spec:
   tls:
   - hosts:
     - myeventsapp.com
-    secretName: my-app-myingress-cert
+    secretName: my-ca-signed-cert-secret

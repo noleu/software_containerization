@@ -1,19 +1,19 @@
 api:
-  api:
-    containerSecurityContext:
-      capabilities:
-        add:
-        - SYS_PTRACE
-    image:
-      repository: ghcr.io/noleu/event_calendar_api
-      tag: latest
-    resources:
-      limits:
-        cpu: "1"
-        memory: 512Mi
-      requests:
-        cpu: 500m
-        memory: 256Mi
+  containerSecurityContext:
+    capabilities:
+      add:
+      - SYS_PTRACE
+  image:
+    repository: ghcr.io/noleu/event_calendar_api
+    tag: v1
+  # resources:
+  #   limits:
+  #     cpu: "1"
+  #     memory: 512Mi
+  #   requests:
+  #     cpu: 500m
+  #     memory: 256Mi
+  containerPort: 80
   replicas: 1
 apiClusterIpService:
   ports:
@@ -24,11 +24,11 @@ appDeveloper:
   serviceAccount:
     annotations: {}
 database:
-  database:
-    image:
-      repository: postgres
-      tag: "16"
+  image:
+    repository: postgres
+    tag: "16"
   replicas: 1
+  containerPort: 5432
 databaseClusterIpService:
   ports:
   - port: 5432
@@ -38,21 +38,21 @@ dbConfigmap:
   dbHost: database-cluster-ip-service
   dbName: Events
 dbSecrets:
-  password: ""
-  username: ""
+  password: "cG9zdGdyZXM="
+  username: "cG9zdGdyZXM="
 frontend:
-  myAppEventFrontend:
-    image:
-      repository: ghcr.io/noleu/event_calendar_frontend
-      tag: latest
-    resources:
-      limits:
-        cpu: 500m
-        memory: 384Mi
-      requests:
-        cpu: 250m
-        memory: 128Mi
+  image:
+    repository: ghcr.io/noleu/event_calendar_frontend
+    tag: v1
+  # resources:
+  #   limits:
+  #     cpu: 500m
+  #     memory: 384Mi
+  #   requests:
+  #     cpu: 250m
+  #     memory: 128Mi
   replicas: 1
+  containerPort: 80
 frontendClusterIpService:
   ports:
   - port: 80
@@ -60,11 +60,19 @@ frontendClusterIpService:
   type: ClusterIP
 frontendConfigmap:
   apiUrl: api-cluster-ip-service
-  nodeEnv: production
 infrastructureAdmin:
   serviceAccount:
     annotations: {}
 kubernetesClusterDomain: cluster.local
 pvc:
+  createPVC: true
   dbPvcClaim0:
     storageRequest: 500Mi
+apiHpa:
+  maxReplicas: 5
+  minReplicas: 1
+  averageUtilization: 50
+frontendHpa:
+  maxReplicas: 3
+  minReplicas: 1
+  averageUtilization: 50

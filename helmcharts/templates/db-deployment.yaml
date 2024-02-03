@@ -4,7 +4,7 @@ metadata:
   name: {{ include "helmcharts.fullname" . }}-database
   labels:
     component: database
-  {{- include "helmcharts.labels" . | nindent 4 }}
+    {{- include "helmcharts.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.database.replicas }}
   selector:
@@ -37,11 +37,11 @@ spec:
               name: {{ include "helmcharts.fullname" . }}-db-secrets
         - name: KUBERNETES_CLUSTER_DOMAIN
           value: {{ quote .Values.kubernetesClusterDomain }}
-        image: {{ .Values.database.database.image.repository }}:{{ .Values.database.database.image.tag
+        image: {{ .Values.database.image.repository }}:{{ .Values.database.image.tag
           | default .Chart.AppVersion }}
         name: database
         ports:
-        - containerPort: 5432
+        - containerPort: {{ .Values.database.containerPort }}
           protocol: TCP
         resources: {}
         volumeMounts:
@@ -53,6 +53,9 @@ spec:
       - name: db-data-storage
         persistentVolumeClaim:
           claimName: {{ include "helmcharts.fullname" . }}-db-pvc-claim0
+{{- if not .Values.pvc.createPVC }}
+{{- include "helmcharts.db-pvc" . | indent 6 }}
+{{- end }}
 ---
 apiVersion: v1
 kind: Service

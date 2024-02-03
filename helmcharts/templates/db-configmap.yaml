@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: {{ include "helmcharts.fullname" . }}-db-configmap
   labels:
-  {{- include "helmcharts.labels" . | nindent 4 }}
+    {{- include "helmcharts.labels" . | nindent 4 }}
 data:
-  db_host: {{ .Values.dbConfigmap.dbHost | quote }}
+  db_host: {{ printf "%s-%s" (include "helmcharts.fullname" .) .Values.dbConfigmap.dbHost | quote }}
   db_name: {{ .Values.dbConfigmap.dbName | quote }}
