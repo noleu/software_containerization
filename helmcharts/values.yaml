@@ -43,7 +43,7 @@ dbSecrets:
 frontend:
   image:
     repository: ghcr.io/noleu/event_calendar_frontend
-    tag: rollout
+    tag: v1
   # resources:
   #   limits:
   #     cpu: 500m
