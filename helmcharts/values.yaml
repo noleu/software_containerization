@@ -43,7 +43,7 @@ dbSecrets:
 frontend:
   image:
     repository: ghcr.io/noleu/event_calendar_frontend
-    tag: v1
+    tag: rollout
   # resources:
   #   limits:
   #     cpu: 500m
@@ -51,8 +51,13 @@ frontend:
   #   requests:
   #     cpu: 250m
   #     memory: 128Mi
-  replicas: 1
+  replicas: 3
   containerPort: 80
+  canary:
+    replicas: 0
+    image:
+      repository: ghcr.io/noleu/event_calendar_frontend
+      tag: canary
 frontendClusterIpService:
   ports:
   - port: 80
@@ -69,10 +74,10 @@ pvc:
   dbPvcClaim0:
     storageRequest: 500Mi
 apiHpa:
-  maxReplicas: 5
+  maxReplicas: 8
   minReplicas: 1
   averageUtilization: 50
 frontendHpa:
-  maxReplicas: 3
+  maxReplicas: 6
   minReplicas: 1
   averageUtilization: 50

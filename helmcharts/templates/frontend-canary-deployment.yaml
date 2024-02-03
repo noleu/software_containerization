@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "helmcharts.fullname" . }}-canary-frontend
+  labels:
+    {{- include "helmcharts.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.frontend.canary.replicas }}
+  selector:
+    matchLabels:
+      app: frontend
+    {{- include "helmcharts.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        app: frontend
+      {{- include "helmcharts.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+      - env:
+        - name: KUBERNETES_CLUSTER_DOMAIN
+          value: {{ quote .Values.kubernetesClusterDomain }}
+        name: my-app-event-frontend
+        image: {{ .Values.frontend.canary.image.repository }}:{{ .Values.frontend.canary.image.tag | default .Chart.AppVersion }}
+        ports:
+          - containerPort: {{ .Values.frontend.containerPort }}
+        resources: {{- toYaml .Values.frontend.resources | nindent 10 }}
+      restartPolicy: Always
