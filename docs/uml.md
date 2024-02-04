@@ -1,5 +1,6 @@
 # Architecture
 
+## Sequence Diagram
 The following sequence diagram shows the interaction between the user, the frontend, the backend and the database.  
 First the user requests the events from the frontend, which in turn requests the events from the backend.  
 The backend fetches the events from the database and returns them to the frontend, which then returns them to the user.
@@ -29,3 +30,6 @@ sequenceDiagram
 
 The frontend is a static webpage, which calls a backend API written in golang, with gin as the http framework.
 The backend uses gorm to to store and retrieve events from a postgres database.
+
+## Kubernetes component diagram
+![Kubernetes component diagram](./Kubernetes-architecture.png "component diagram")

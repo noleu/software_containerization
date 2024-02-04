@@ -1,0 +1,46 @@
+{{- if .Values.networkPolicies.denyExternalDbAccess.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ .Values.networkPolicies.denyExternalDbAccess.name }}
+spec:
+  podSelector:
+    matchLabels:
+      {{- toYaml .Values.networkPolicies.denyExternalDbAccess.podSelectorLabels | nindent 6 }}
+  policyTypes:
+{{ toYaml .Values.networkPolicies.denyExternalDbAccess.policyTypes | nindent 4 }}
+  ingress:
+{{ toYaml .Values.networkPolicies.denyExternalDbAccess.ingress | nindent 4 }}
+---
+{{- end }}
+{{- if .Values.networkPolicies.allowApiToDb.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ .Values.networkPolicies.allowApiToDb.name }}
+spec:
+  podSelector:
+    matchLabels:
+      {{- toYaml .Values.networkPolicies.allowApiToDb.podSelectorLabels | nindent 6 }}
+  policyTypes:
+{{ toYaml .Values.networkPolicies.allowApiToDb.policyTypes | nindent 4 }}
+  ingress:
+{{ toYaml .Values.networkPolicies.allowApiToDb.ingress | nindent 4 }}
+---
+{{- end }}
+{{- if .Values.networkPolicies.allowFrontendToApi.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ .Values.networkPolicies.allowFrontendToApi.name }}
+  labels:
+    {{- include "helmcharts.labels" . | nindent 4 }}
+spec:
+  podSelector:
+    matchLabels:
+      {{- toYaml .Values.networkPolicies.allowFrontendToApi.podSelectorLabels | nindent 6 }}
+  policyTypes:
+    {{- toYaml .Values.networkPolicies.allowFrontendToApi.policyTypes | nindent 4 }}
+  ingress:
+    {{- toYaml .Values.networkPolicies.allowFrontendToApi.ingress | nindent 4 }}
+{{- end }}

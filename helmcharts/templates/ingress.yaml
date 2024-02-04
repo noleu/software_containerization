@@ -5,7 +5,7 @@ metadata:
   labels:
   {{- include "helmcharts.labels" . | nindent 4 }}
   annotations:
-    cert-manager.io/cluster-issuer: managed-cert
+    cert-manager.io/issuer: {{ include "helmcharts.fullname" . }}-ca-issuer
 spec:
   ingressClassName: nginx
   rules:
@@ -22,4 +22,4 @@ spec:
   tls:
   - hosts:
     - myeventsapp.com
-    secretName: my-ca-signed-cert-secret
+    secretName: {{ include "helmcharts.fullname" . }}-ca-certificate-secret

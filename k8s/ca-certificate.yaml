@@ -1,0 +1,21 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: ca-certificate
+  namespace: default
+spec:
+  secretName: ca-certificate-secret
+  commonName: "My CA"
+  isCA: true
+  issuerRef:
+    name: selfsigned-issuer
+    kind: Issuer
+  subject:
+    countries: 
+      - "Netherlands"
+    localities:
+      - "Amsterdam"
+    organizations:
+      - "VU"
+    organizationalUnits:
+      - "CS"

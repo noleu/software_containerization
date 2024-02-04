@@ -6,13 +6,6 @@ api:
   image:
     repository: ghcr.io/noleu/event_calendar_api
     tag: v1
-  # resources:
-  #   limits:
-  #     cpu: "1"
-  #     memory: 512Mi
-  #   requests:
-  #     cpu: 500m
-  #     memory: 256Mi
   containerPort: 80
   replicas: 1
 apiClusterIpService:
@@ -44,13 +37,6 @@ frontend:
   image:
     repository: ghcr.io/noleu/event_calendar_frontend
     tag: v1
-  # resources:
-  #   limits:
-  #     cpu: 500m
-  #     memory: 384Mi
-  #   requests:
-  #     cpu: 250m
-  #     memory: 128Mi
   replicas: 3
   containerPort: 80
   canary:
@@ -81,3 +67,62 @@ frontendHpa:
   maxReplicas: 6
   minReplicas: 1
   averageUtilization: 50
+
+caCertificate:
+  enabled: true
+  commonName: "My CA"
+  isCA: true
+  subject:
+    countries:
+      - "Netherlands"
+    localities:
+      - "Amsterdam"
+    organizations:
+      - "VU"
+    organizationalUnits:
+      - "CS"
+
+selfSignedIssuer:
+  enabled: true
+
+networkPolicies:
+  denyExternalDbAccess:
+    enabled: false
+    name: deny-external-db-access
+    podSelectorLabels:
+      component: database
+    policyTypes:
+      - Ingress
+    ingress: []
+
+  allowApiToDb:
+    enabled: false
+    name: allow-api-to-db
+    podSelectorLabels:
+      component: database
+    policyTypes:
+      - Ingress
+    ingress:
+      - from:
+          - podSelector:
+              matchLabels:
+                component: api
+        ports:
+          - protocol: TCP
+            port: 5432
+
+  allowFrontendToApi:
+    enabled: false
+    name: allow-frontend-to-api
+    podSelectorLabels:
+      component: api
+    policyTypes:
+      - Ingress
+    ingress:
+      - from:
+          - podSelector:
+              matchLabels:
+                app: frontend
+        ports:
+          - protocol: TCP
+            port: 80 

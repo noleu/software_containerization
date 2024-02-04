@@ -3,45 +3,71 @@
 - install cert-manager
 - Configure a CA Issuer
 - Configure Ingress with the certificate obtained from the CA Issuer
-- Verify the connection with openssl
+- Verify the connection
 
 
 ## Steps
-- Install latest ingress controller with the command:
-`kubectl create namespace ingress-nginx
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
-`
-- Install cert-manager CRDs and cert-manager with the command:
-`kubectl create namespace cert-manager
-helm repo add jetstack https://charts.jetstack.io
-helm repo update
-helm install cert-manager jetstack/cert-manager --namespace cert-manager --version v1.8.0 --set installCRDs=true`
+
+- Prereq: Install latest ingress controller, cert-manager CRDs and cert-manager
 
 - run Helm chart
 `helm install myapp .`
 
-- Wait on myapp-ingress-service address to populate and check it with the command: `kubectl get ingress`
+- retrieve the CA certificate secret that was created
+`kubectl get secrets`
 
-- Verify the connection with openssl
+- To verify the validity of the certificate view the website or with the following openssl command
 `openssl s_client -connect myeventsapp.com:443 -servername myeventsapp.com`
 
+### To Trust our self-signed Certificate Authority (CA) on Mac to get rid of browser warning extract the CA certificate from the secret to a PEM file
+`kubectl get secret myapp-helmcharts-ca-certificate-secret -n default -o jsonpath="{.data['tls\.crt']}" | base64 --decode > myCA.pem`
 
-### Trust our self-signed Certificate Authority (CA) on Mac to get rid of browser warning
-
-- Extract the CA certificate from the secret in our Kubernetes cluster
-`kubectl get secret ca-certificate-secret -n default -o jsonpath="{.data['tls\.crt']}" | base64 --decode > myCA.pem`
-
-- This command adds the certificate to the System keychain and marks it as trusted for SSL:
+- add the CA certificate to the trusted root certificates in your keychain
 `sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain myCA.pem`
 
 
-
 # Network Policies
-- allow-api-to-db-networkpolicy.yaml
-How to test:
 
-- allow-frontend-to-api-networkpolicy.yaml
-How to test:
+Check for allowed networkpolicies:
+`kubectl get networkpolicies --all-namespaces`
 
-- deny-external-db-access-networkpolicy.yaml
-How to test:
+1- denyExternalDbAccess
+
+`helm upgrade myapp . --set networkPolicies.denyExternalDbAccess.enabled=true`
+
+- Try to connect to database from inside the api pod. It'd fail: 
+`kubectl get pods`  
+`kubectl exec -it myapp-helmcharts-api-7884d6c575-qlqvq  -- /bin/sh `
+
+`PGPASSWORD=cG9zdGdyZXM= psql -h myapp-helmcharts-database-cluster-ip-service -U cG9zdGdyZXM= -d Events`
+
+Network policies are additive apply the second network policy. api pod connection to the database is successful
+
+2- allowApiToDb
+
+`helm upgrade myapp . --set networkPolicies.allowApiToDb.enabled=true`
+
+`kubectl get pods`  
+`kubectl exec -it myapp-helmcharts-api-7884d6c575-qlqvq  -- /bin/sh `
+
+`PGPASSWORD=cG9zdGdyZXM= psql -h myapp-helmcharts-database-cluster-ip-service -U cG9zdGdyZXM= -d Events`
+
+Connected.
+
+3- allowFrontendToApi
+
+- Go inside a frontend pod and see that it connects
+`kubectl exec -it myapp-helmcharts-frontend-65875f8989-4xfwh -- /bin/sh`
+Execute the command
+`curl -v http://api-cluster-ip-service/api/events`
+
+
+- Create a test pod and exec into it 
+`kubectl run curlpod --image=alpine --restart=Never --rm -it -- /bin/sh`
+
+`apk add curl`
+
+`curl -v http://api-cluster-ip-service/api/events`
+
+Fails.
+

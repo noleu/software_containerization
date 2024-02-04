@@ -4,7 +4,7 @@ metadata:
   name: my-app-ingress-service
   namespace: default
   annotations:
-    cert-manager.io/cluster-issuer: managed-cert
+    cert-manager.io/issuer: ca-issuer
 spec:
   ingressClassName: nginx
   rules:

@@ -14,9 +14,6 @@ FROM  debian:buster
 EXPOSE 80
 WORKDIR /
 
-# Install wget
-RUN apt-get update && apt-get install -y wget && rm -rf /var/lib/apt/lists/*
-
 COPY --from=build-env /server /
 # CMD ["/server"]
 ENTRYPOINT ["/server"]

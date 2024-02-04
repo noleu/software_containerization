@@ -1,0 +1,16 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ include "helmcharts.fullname" . }}-ca-certificate
+spec:
+  secretName: {{ include "helmcharts.fullname" . }}-ca-certificate-secret
+  commonName: {{ .Values.caCertificate.commonName }}
+  isCA: {{ .Values.caCertificate.isCA }}
+  issuerRef:
+    name: {{ include "helmcharts.fullname" . }}-selfsigned-issuer
+    kind: Issuer
+  subject:
+    countries: {{ .Values.caCertificate.subject.countries | toYaml | nindent 4 }}
+    localities: {{ .Values.caCertificate.subject.localities | toYaml | nindent 4 }}
+    organizations: {{ .Values.caCertificate.subject.organizations | toYaml | nindent 4 }}
+    organizationalUnits: {{ .Values.caCertificate.subject.organizationalUnits | toYaml | nindent 4 }}
